@@ -201,7 +201,7 @@ mark{ background:var(--amber-soft); color:inherit; border-bottom:2px solid var(-
 .ok-box i{ width:10px; height:10px; border-radius:50%; background:var(--ok); }
 .sk{ background:var(--surface-2); border-radius:6px; display:block; }
 .sk-line{ display:block; height:10px; border-radius:5px; background:var(--surface-2); margin:7px 0; }
-.ghost{ pointer-events:none; }
+.ghost:not(.btn){ pointer-events:none; }
 .ghost-note{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; border:1.5px dashed var(--line-strong); border-radius:var(--r-m); padding:12px 14px; color:var(--muted); font-size:13.5px; margin-bottom:14px; }
 .ghost-note b{ color:var(--ink-2); font-weight:600; }
 .ghost-note .btn{ margin-left:auto; }
@@ -2924,10 +2924,35 @@ async function saveAplica(id) { const v = clone(Store.get('vales', id)); v.aplic
 let MOD = null;
 function vMods() {
   const rows = ((Store.doc('cambios') || {}).rows || []).slice().sort((a, b) => String(b.fecha).localeCompare(String(a.fecha)));
+  const p = Store.doc('project') || {}; const cs = M.concepts();
+  const dl = {}; rows.forEach(r => r.lines.forEach(l => dl[l.clave] = (dl[l.clave] || 0) + num(l.delta)));
+  const base = c => num(c.cant) - (dl[c.clave] || 0); // cantidad al cargar el catálogo, antes de lo registrado aquí
+  const orig = cs.reduce((a, c) => a + num(c.cant0) * num(c.pu), 0);
+  const ordAdj = cs.filter(c => c.tipo !== 'Extraordinario').reduce((a, c) => a + (base(c) - num(c.cant0)) * num(c.pu), 0);
+  const ext = {}; cs.filter(c => c.tipo === 'Extraordinario' && !(c.mods || []).length).forEach(c => { const k = c.conv || 'Sin grupo'; ext[k] = (ext[k] || 0) + base(c) * num(c.pu); });
   const sum = t => rows.filter(r => r.tipo === t).reduce((a, r) => a + r.lines.reduce((s, l) => s + num(l.delta) * num(l.pu), 0), 0);
-  const base = M.concepts().reduce((a, c) => a + num(c.cant0 ?? c.cant) * num(c.pu), 0), vig = M.concepts().reduce((a, c) => a + num(c.cant) * num(c.pu), 0);
+  const vig = cs.reduce((a, c) => a + num(c.cant) * num(c.pu), 0); const extTot = Object.values(ext).reduce((a, b) => a + b, 0);
+  const lbl = k => ({ C1: 'Extraordinarios del convenio 1', C2: 'Extraordinarios del convenio 2', 'S-C': 'Extraordinarios sin convenio todavía' }[k] || `Extraordinarios ${k}`);
+  const row = (t, v, s, b) => `<tr${b ? ' style="font-weight:700;background:var(--surface)"' : ''}><td>${t}${s ? `<br><span class="hint-line" style="font-weight:400">${s}</span>` : ''}</td><td class="n" style="${!b && v < 0 ? 'color:var(--red)' : ''}">${b ? '' : v > 0 ? '+' : ''}${fmtM(v)}</td></tr>`;
+  const difO = num(p.monto) ? orig - num(p.monto) : null, difV = num(p.montoVigente) ? vig - num(p.montoVigente) : null;
   return `<div class="tb-row" style="margin-bottom:14px"><span class="hint-line">Cada modificación queda con su referencia, el archivo firmado y el detalle de lo que cambió en el catálogo.</span>${Store.readOnly || !isAdmin() ? '' : `<button class="btn primary" style="margin-left:auto" data-action="mod-new">${ICON.plus} Registrar aditiva / deductiva</button>`}</div>
-  <section class="kpis" style="margin-top:0"><div class="kpi"><div class="k-l">Catálogo original</div><div class="k-v num" style="font-size:24px">${fmtM(base)}</div><div class="k-s">cantidades de contrato</div></div><div class="kpi"><div class="k-l">Aditivas</div><div class="k-v num good" style="font-size:24px">${fmtM(sum('Aditiva'))}</div><div class="k-s">${rows.filter(r => r.tipo === 'Aditiva').length} registradas</div></div><div class="kpi"><div class="k-l">Deductivas</div><div class="k-v num bad" style="font-size:24px">${fmtM(sum('Deductiva'))}</div><div class="k-s">${rows.filter(r => r.tipo === 'Deductiva').length} registradas</div></div><div class="kpi"><div class="k-l">Extraordinarios</div><div class="k-v num" style="font-size:24px">${fmtM(sum('Extraordinario'))}</div><div class="k-s">${rows.filter(r => r.tipo === 'Extraordinario').length} registrados</div></div><div class="kpi"><div class="k-l">Catálogo vigente</div><div class="k-v num" style="font-size:24px">${fmtM(vig)}</div><div class="k-s">con todas las modificaciones</div></div></section>
+  <div class="grid2 g-main" style="margin-bottom:18px"><div class="card"><h3>Cuadre del catálogo</h3><div class="sub">De dónde sale cada cifra: cantidad × P.U. de cada concepto del catálogo</div>
+    <div class="tbl-wrap" style="border:0"><table class="tbl"><tbody>
+      ${row('Catálogo original', orig, `Cantidad de contrato × P.U. de ${cs.filter(c => c.tipo !== 'Extraordinario').length} conceptos ordinarios`, true)}
+      ${Math.abs(ordAdj) > 1 ? row('Ajustes de convenios a conceptos ordinarios', ordAdj, `${cs.filter(c => c.tipo !== 'Extraordinario' && Math.abs(base(c) - num(c.cant0)) > 1e-6).length} conceptos con cantidad distinta a la de contrato al cargar el catálogo`) : ''}
+      ${Object.entries(ext).map(([k, v]) => row(lbl(k), v, `${cs.filter(c => c.tipo === 'Extraordinario' && (c.conv || 'Sin grupo') === k && !(c.mods || []).length).length} conceptos`)).join('')}
+      ${rows.length ? row('Registrado en la plataforma', sum('Aditiva') + sum('Deductiva') + sum('Extraordinario'), `${rows.length} modificaciones con archivo firmado`) : ''}
+      ${row('Catálogo vigente', vig, 'Cantidad vigente × P.U. de todos los conceptos', true)}
+    </tbody></table></div></div>
+    <div class="card"><h3>Contra el contrato</h3><div class="sub">Montos capturados en Configuración › Proyecto</div>
+    <div class="tbl-wrap" style="border:0"><table class="tbl"><tbody>
+      <tr><td>Monto contratado<br><span class="hint-line">Configuración</span></td><td class="n">${num(p.monto) ? fmtM(p.monto) : '–'}</td></tr>
+      <tr><td>Diferencia con el catálogo original</td><td class="n" style="color:${difO && Math.abs(difO) > 1e6 ? 'var(--red)' : 'inherit'}">${difO == null ? '–' : fmtM(difO)}</td></tr>
+      <tr><td>Monto vigente con convenios<br><span class="hint-line">Configuración</span></td><td class="n">${num(p.montoVigente) ? fmtM(p.montoVigente) : '–'}</td></tr>
+      <tr><td>Diferencia con el catálogo vigente</td><td class="n" style="color:${difV && Math.abs(difV) > 1e6 ? 'var(--red)' : 'inherit'}">${difV == null ? '–' : fmtM(difV)}</td></tr>
+      ${ext['S-C'] && difV != null ? `<tr><td colspan="2" class="hint-line">La diferencia del vigente se explica casi completa por los extraordinarios sin convenio (${fmtM(ext['S-C'])}): están en el catálogo pero aún no en un convenio firmado.</td></tr>` : ''}
+    </tbody></table></div></div></div>
+  <section class="kpis" style="margin-top:0"><div class="kpi"><div class="k-l">Aditivas registradas</div><div class="k-v num good" style="font-size:24px">${fmtM(sum('Aditiva'))}</div><div class="k-s">${rows.filter(r => r.tipo === 'Aditiva').length} en la plataforma</div></div><div class="kpi"><div class="k-l">Deductivas registradas</div><div class="k-v num bad" style="font-size:24px">${fmtM(sum('Deductiva'))}</div><div class="k-s">${rows.filter(r => r.tipo === 'Deductiva').length} en la plataforma</div></div><div class="kpi"><div class="k-l">Extraordinarios registrados</div><div class="k-v num" style="font-size:24px">${fmtM(sum('Extraordinario'))}</div><div class="k-s">${rows.filter(r => r.tipo === 'Extraordinario').length} en la plataforma</div></div><div class="kpi"><div class="k-l">Extraordinarios al cargar</div><div class="k-v num" style="font-size:24px">${fmtM(extTot)}</div><div class="k-s">${Object.keys(ext).length} grupos de convenio</div></div></section>
   ${rows.length ? rows.map(r => `<article class="rep is-signed"><div class="rep-h"><span class="pill ${r.tipo === 'Deductiva' ? 'bad' : r.tipo === 'Aditiva' ? 'ok' : 'warn'}">${esc(r.tipo)}</span><b>${esc(r.ref)}</b><span class="who">${fDMY(pd(r.fecha))} · registró ${esc(r.author?.name || '')}</span><span style="margin-left:auto"><b>${fmtM(r.lines.reduce((s, l) => s + num(l.delta) * num(l.pu), 0))}</b></span></div>${r.desc ? `<p class="e-text">${esc(r.desc)}</p>` : ''}
     <div class="tbl-wrap" style="margin-top:8px"><table class="tbl"><thead><tr><th>Clave</th><th>Concepto</th><th class="n">Antes</th><th class="n">Cambio</th><th class="n">Después</th><th class="n">Importe</th></tr></thead><tbody>${r.lines.map(l => `<tr><td><b>${esc(l.clave)}</b>${l.nuevo ? ' <span class="pill warn">nuevo</span>' : ''}</td><td>${esc((l.desc || M.cmap().get(l.clave)?.desc || '').slice(0, 80))}</td><td class="n">${fmtQ(l.antes)}</td><td class="n" style="color:${l.delta < 0 ? 'var(--red)' : 'var(--ok)'}">${l.delta > 0 ? '+' : ''}${fmtQ(l.delta)} ${esc(l.unidad || '')}</td><td class="n">${fmtQ(l.despues)}</td><td class="n">${fmtM(num(l.delta) * num(l.pu))}</td></tr>`).join('')}</tbody></table></div>
     <div class="thumbs">${(r.files || []).map(f => `<a class="btn sm" href="${esc(Store.fileUrl(f))}" target="_blank" rel="noopener">📄 ${esc(f.name)}</a>`).join('')}</div></article>`).join('')
