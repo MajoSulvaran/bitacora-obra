@@ -577,6 +577,33 @@ details.more .more-body{ display:grid; gap:12px; padding-bottom:14px; }
 .cal span.ok{ background:var(--ok); } .cal span.dr{ background:var(--amber); } .cal span.no{ background:var(--red); } .cal span.na{ background:transparent; border:1px solid var(--line); }
 .chip input{ accent-color:var(--brand); margin:0; }
 #modal2-root .overlay{ z-index:150; }
+
+/* v6: Mi día, portafolio y captura cómoda en campo */
+.md-hero{ display:flex; align-items:center; justify-content:space-between; gap:18px; margin-bottom:18px; }
+.md-hero h1{ font-size:30px; margin:2px 0 4px; } .md-hero p{ margin:0; color:var(--muted); }
+.md-ring{ --p:0; width:92px; height:92px; border-radius:50%; flex:none; display:grid; place-items:center; align-content:center; background:conic-gradient(var(--brand) calc(var(--p)*1%), var(--surface-2) 0); position:relative; }
+.md-ring::before{ content:""; position:absolute; inset:9px; border-radius:50%; background:var(--bg); }
+.md-ring b,.md-ring span{ position:relative; } .md-ring b{ font-size:22px; line-height:1; } .md-ring span{ font-size:11px; color:var(--muted); }
+.md-steps{ display:grid; gap:10px; }
+.md-step{ display:flex; align-items:center; gap:14px; padding:16px; border:1px solid var(--line); border-radius:var(--r-l); background:var(--bg); border-left:5px solid var(--line-strong); }
+.md-step.ok{ border-left-color:var(--ok); } .md-step.warn{ border-left-color:var(--amber); } .md-step.bad{ border-left-color:var(--red); }
+.md-n{ width:30px; height:30px; border-radius:50%; background:var(--surface); display:grid; place-items:center; font-weight:700; flex:none; }
+.md-step.ok .md-n{ background:var(--ok); color:#fff; }
+.md-b{ flex:1; display:flex; flex-direction:column; gap:2px; min-width:0; } .md-b b{ font-size:16px; } .md-b>span{ color:var(--muted); font-size:13.5px; }
+.md-list{ display:flex; flex-direction:column; gap:2px; margin-top:6px; font-size:12.5px; color:var(--ink-2); }
+.md-step .btn{ min-height:44px; padding:0 18px; }
+.pf-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:14px; }
+.pf-card{ text-align:left; border:1px solid var(--line); border-radius:var(--r-l); background:var(--bg); padding:16px; display:flex; flex-direction:column; gap:6px; cursor:pointer; border-top:5px solid var(--line-strong); font:inherit; color:inherit; }
+.pf-card:hover{ box-shadow:var(--shadow); } .pf-card.ok{ border-top-color:var(--ok); } .pf-card.warn{ border-top-color:var(--amber); } .pf-card.bad{ border-top-color:var(--red); }
+.pf-h{ display:flex; gap:6px; align-items:center; } .pf-n{ font-size:17px; line-height:1.25; }
+.pf-k{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:6px; } .pf-k div{ display:flex; flex-direction:column; } .pf-k small{ font-size:11px; color:var(--muted); } .pf-k b{ font-size:18px; } .pf-k span{ font-size:11px; color:var(--muted); }
+.pf-k b.good{ color:var(--ok); } .pf-k b.warn{ color:var(--amber); } .pf-k b.bad{ color:var(--red); }
+.pf-f{ display:flex; gap:12px; flex-wrap:wrap; font-size:12px; color:var(--muted); border-top:1px solid var(--line); padding-top:8px; margin-top:4px; }
+@media (max-width:760px){
+  .md-hero h1{ font-size:24px; } .md-step{ flex-wrap:wrap; } .md-step .btn{ width:100%; justify-content:center; }
+  .sheet .input, .sheet select.input{ min-height:44px; font-size:16px; } .sheet .input.sm{ min-height:40px; font-size:15px; }
+  .seg button{ min-height:40px; } .pf-k{ grid-template-columns:repeat(2,1fr); }
+}
 </style>
 </head>
 <body>
@@ -650,6 +677,8 @@ const ICON = {
   bell: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>',
   calidad: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>',
   plan: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4M7 13h4M7 17h7"/></svg>',
+  portafolio: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>',
+  midia: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>',
   pend: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4h6a1 1 0 0 1 1 1v1H8V5a1 1 0 0 1 1-1z"/><path d="M8 5H6a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><path d="M8.5 13l2.5 2.5L16 10"/></svg>',
   mark: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M6 20V9l6-5 6 5v11"/><path d="M10 20v-5h4v5"/></svg>'
 };
@@ -764,10 +793,10 @@ const IDB = {
    Colecciones (un documento por elemento): reports, docs, audit
    Documentos únicos (config/*): project, finance, equip
    Listas grandes en bloques (blobs/*): catalog, program, hc               */
-const COLLS = ['reports', 'docs', 'audit', 'pend', 'equipos', 'vales', 'insp', 'obs', 'lab', 'plan'];
+const COLLS = ['reports', 'docs', 'audit', 'pend', 'equipos', 'vales', 'insp', 'obs', 'lab', 'plan', 'feedback'];
 const CHUNK = 350;
 const Store = {
-  mode: 'loading', ready: false, readOnly: false, c: { reports: [], docs: [], audit: [], pend: [], equipos: [], vales: [], insp: [], obs: [], lab: [], plan: [] }, d: {}, arr: { catalog: [], program: [], hc: [], baseline: [], hist: [], remis: [] },
+  mode: 'loading', ready: false, readOnly: false, c: { reports: [], docs: [], audit: [], pend: [], equipos: [], vales: [], insp: [], obs: [], lab: [], plan: [], feedback: [] }, d: {}, arr: { catalog: [], program: [], hc: [], baseline: [], hist: [], remis: [] },
   blobDocs: {}, db: null, assets: null, sample: null, downloads: null, localUrls: new Map(), listeners: [], _t: null,
   on(f) { this.listeners.push(f); },
   emit() { clearTimeout(this._t); this._t = setTimeout(() => this.listeners.forEach(f => f()), 30); },
@@ -787,7 +816,7 @@ const Store = {
       try { const u = await window.claude.use('user'); if (u && u.can && (await u.can('data.write')) === false) this.readOnly = true; } catch (e) { }
       const got = new Set(); const need = COLLS.length + 2;
       const mark = k => { got.add(k); if (!this.ready && got.size >= need) this.ready = true; this.emit(); };
-      const ORD = { reports: 'date', docs: 'fecha', audit: 'at', pend: 'alta', equipos: 'createdAt', vales: 'fecha', insp: 'fecha', obs: 'alta', lab: 'fecha', plan: 'semana' };
+      const ORD = { reports: 'date', docs: 'fecha', audit: 'at', pend: 'alta', equipos: 'createdAt', vales: 'fecha', insp: 'fecha', obs: 'alta', lab: 'fecha', plan: 'semana', feedback: 'at' };
       COLLS.forEach(c => db.collection(c).orderBy(ORD[c], 'desc').limit(1000).onSnapshot(s => { this.c[c] = s.docs.map(d => Object.assign({}, d.data(), { id: d.id })); mark(c); }, () => { mark(c); toast('Se perdió la conexión con la base compartida. Recarga la página.', true); }));
       db.collection('config').onSnapshot(s => { this.d = {}; s.docs.forEach(d => this.d[d.id] = Object.assign({}, d.data())); mark('config'); }, () => mark('config'));
       db.collection('blobs').onSnapshot(s => { this.blobDocs = {}; s.docs.forEach(d => this.blobDocs[d.id] = d.data()); this.rebuildArrays(); mark('blobs'); }, () => mark('blobs'));
@@ -1076,12 +1105,13 @@ const S = {
   hitoMonth: 'todos', gq: '', galType: 'todas', docType: '', rptKind: 'semanal', rptAnchor: TODAY(), devFilter: 'todos', devFase: '', ganttFase: '', catQ: '', catTipo: '', pronoMonth: new Date(TODAY().getFullYear(), TODAY().getMonth(), 1), pronoFase: '', pronoCC: '', pendF: 'abiertos', pendT: '', eqF: 'activos', eqResp: '', obsF: 'abiertas', obsT: '', planWeek: mondayOf(TODAY()), remMonth: new Date(TODAY().getFullYear(), TODAY().getMonth(), 1), recl: { titulo: '', desde: '', hasta: '', fase: '', frente: '', kw: '', ok: false }, valF: 'todos', segMonth: new Date(TODAY().getFullYear(), TODAY().getMonth(), 1)
 };
 const NAV = [
-  { g: 'Operación', items: [['tablero', 'Tablero'], ['bitacora', 'Bitácora diaria'], ['pend', 'Pendientes y acuerdos'], ['calidad', 'Calidad y seguridad'], ['equipos', 'Maquinaria en obra'], ['almacen', 'Almacén'], ['hitos', 'Hitos']] },
+  { g: '', items: [['portafolio', 'Mis proyectos']] },
+  { g: 'Operación', items: [['midia', 'Mi día'], ['tablero', 'Tablero'], ['bitacora', 'Bitácora diaria'], ['pend', 'Pendientes y acuerdos'], ['calidad', 'Calidad y seguridad'], ['equipos', 'Maquinaria en obra'], ['almacen', 'Almacén'], ['hitos', 'Hitos']] },
   { g: 'Control', items: [['plan', 'Plan semanal'], ['programa', 'Catálogo y programa'], ['control', 'Avance y desviaciones'], ['financiero', 'Financiero']] },
   { g: 'Respaldo', items: [['expediente', 'Expediente'], ['reportes', 'Reportes']] },
   { g: '', items: [['config', 'Configuración']] }
 ];
-const TABBAR = [['tablero', 'Tablero'], ['bitacora', 'Bitácora'], ['control', 'Avance'], ['expediente', 'Expediente'], ['more', 'Más']];
+const TABBAR = [['midia', 'Mi día'], ['tablero', 'Tablero'], ['bitacora', 'Bitácora'], ['plan', 'Semana'], ['control', 'Avance'], ['expediente', 'Expediente'], ['more', 'Más']];
 
 function projProgress() {
   const p = Store.doc('project'); if (!p || !p.start || !p.end) return null;
@@ -1095,21 +1125,22 @@ function renderChrome() {
   const sync = Store.mode === 'github' ? `<div class="sync"><i></i><span id="sync-txt">${GHSync.label()}</span></div>` : Store.mode === 'cloud' ? `<div class="sync"><i></i>En vivo · base compartida${Store.readOnly ? ' (solo lectura)' : ''}</div>` : Store.mode === 'local' ? `<div class="sync local"><i></i>Guardado en este navegador</div>` : `<div class="sync local"><i></i>Sin almacenamiento</div>`;
   $('#rail').innerHTML = `
     <div class="brand"><div class="brand-mark">${ICON.mark}</div><div><div class="brand-name">Bitácora de Obra</div><div class="brand-sub">Control de proyecto · Construcción</div></div></div>
-    <button class="proj-card" data-action="go" data-v="${isAdmin() ? 'config' : homeView()}" title="Datos del proyecto">
-      <span class="pc-label"><span>Proyecto</span><span>Editar</span></span>
+    <button class="proj-card" ${GHSync.dir && myProjects().length > 1 ? 'data-action="proj-pick"' : `data-action="go" data-v="${isAdmin() ? 'config' : homeView()}"`} title="Proyecto">
+      <span class="pc-label"><span>Proyecto</span><span>${GHSync.dir && myProjects().length > 1 ? 'Cambiar ▾' : isAdmin() ? 'Editar' : ''}</span></span>
       <span class="pc-name">${esc(p.name || 'Configura tu proyecto')}</span>
       ${pr ? `<span class="timebar"><span style="width:${(pr.pct * 100).toFixed(1)}%"></span></span><span class="pc-week">Semana de obra ${pr.week} de ${pr.weeks} · ${Math.round(pr.pct * 100)}% del plazo</span>` : '<span class="pc-week">Agrega fechas de inicio y término</span>'}
     </button>
     ${canView('bitacora') && !Store.readOnly ? `<button class="btn-new" data-action="new-report">${ICON.plus} Reporte del día</button>` : ''}
     <nav class="nav" aria-label="Secciones">${NAV.map(g => ({ g: g.g, items: g.items.filter(([k]) => canView(k)) })).filter(g => g.items.length).map(g => `${g.g ? `<div class="nav-group">${g.g}</div>` : '<div style="height:10px"></div>'}${g.items.map(([k, l]) => `<button data-action="go" data-v="${k}" ${S.view === k ? 'aria-current="page"' : ''}>${ICON[k]}${l}${k === 'tablero' && na ? `<span class="badge red" title="Alertas abiertas">${na}</span>` : ''}${k === 'bitacora' && drafts ? `<span class="badge" title="Reportes sin firmar">${drafts}</span>` : ''}${k === 'pend' && Store.ready && M.pendLate().length ? `<span class="badge red" title="Pendientes vencidos">${M.pendLate().length}</span>` : ''}</button>`).join('')}`).join('')}</nav>
     <div class="rail-foot">${sync}
+      <button class="btn sm ghost" data-action="fb-open" style="justify-content:flex-start">💬 Reportar falla o sugerencia</button>
       <button class="btn sm" data-action="inbox" style="justify-content:flex-start">${ICON.bell} Mi bandeja${nIn ? ` <span class="badge red">${nIn}</span>` : ''}</button>
       <div class="session"><div class="avatar">${esc(initials(s?.name))}</div><div class="who">${s ? `<b>${esc(s.name)}</b><span>${esc(usersOn() ? ROL[myRol()]?.label : (s.puesto || s.role))}</span>` : '<b>Sin identificar</b><span>Indica quién captura</span>'}<br>${usersOn() ? '<button class="link-btn" data-action="logout">Cerrar sesión</button>' : `<button class="link-btn" data-action="session">${s ? 'Cambiar' : 'Identificarme'}</button>`}</div></div></div>`;
   $('#topbar').innerHTML = `<div class="brand-mark" style="width:30px;height:30px">${ICON.mark}</div>
     <button class="t-proj" data-action="go" data-v="config"><b>${esc(p.name || 'Configura tu proyecto')}</b><span>${pr ? `Semana de obra ${pr.week} de ${pr.weeks}` : 'Bitácora de Obra'}${Store.mode === 'cloud' ? ' · en vivo' : ''}</span></button>
     <button class="avatar" style="border:0;position:relative" data-action="inbox" title="Mi bandeja">${nIn ? '<i class="dotbadge"></i>' : ''}${esc(initials(s?.name))}</button>`;
   const inMore = !TABBAR.some(t => t[0] === S.view);
-  $('#tabbar').innerHTML = TABBAR.filter(([k]) => k === 'more' || canView(k)).map(([k, l]) => `<button data-action="${k === 'more' ? 'more' : 'go'}" data-v="${k}" ${(S.view === k || (k === 'more' && inMore)) ? 'aria-current="page"' : ''}>${ICON[k]}${l}</button>`).join('');
+  $('#tabbar').innerHTML = TABBAR.filter(([k]) => k === 'more' || canView(k)).filter((x, i, a) => x[0] === 'more' || a.filter(y => y[0] !== 'more').indexOf(x) < 4).map(([k, l]) => `<button data-action="${k === 'more' ? 'more' : 'go'}" data-v="${k}" ${(S.view === k || (k === 'more' && inMore)) ? 'aria-current="page"' : ''}>${ICON[k]}${l}</button>`).join('');
   $('#fab').style.display = ['bitacora', 'tablero', 'hitos'].includes(S.view) && canView('bitacora') && !Store.readOnly ? '' : 'none';
 }
 function subtabs(view, items) {
@@ -1286,8 +1317,8 @@ function vPrograma() {
   const sub = S.sub.programa;
   return `<div class="v-head"><div><h1>Catálogo y programa</h1><p>Conceptos, partidas, volúmenes y precios del presupuesto, y en qué fase y fechas se ejecuta cada uno. De aquí salen la Curva S y las desviaciones.</p></div>
     ${Store.readOnly ? '' : `<button class="btn" data-action="sub" data-v="programa" data-k="importar">${ICON.up} Importar</button>`}</div>
-  ${subtabs('programa', [['catalogo', 'Catálogo de conceptos'], ['mods', 'Aditivas y deductivas'], ['gantt', 'Programa por fase'], ...(isAdmin() ? [['importar', 'Importar y plantillas']] : [])])}
-  ${sub === 'catalogo' ? vCatalogo() : sub === 'mods' ? vMods() : sub === 'gantt' || !isAdmin() ? vGantt() : vImportar()}`;
+  ${subtabs('programa', [['catalogo', 'Catálogo de conceptos'], ['mods', 'Aditivas y deductivas'], ['insumos', 'Insumos por concepto'], ['gantt', 'Programa por fase'], ...(isAdmin() ? [['importar', 'Importar y plantillas']] : [])])}
+  ${sub === 'catalogo' ? vCatalogo() : sub === 'mods' ? vMods() : sub === 'insumos' ? vInsumos() : sub === 'gantt' || !isAdmin() ? vGantt() : vImportar()}`;
 }
 function vCatalogo() {
   const cs = M.concepts(); const ex = M.execByClave(null);
@@ -1414,7 +1445,7 @@ function drawCharts() {
     const proj = sc.map((x, i) => { if (i < lastI || !st?.spi || lastI < 0) return null; const slope = st.spi * ((sc[i].pv ?? 1) - (sc[lastI].pv ?? 0)); return Math.min(1, sc[lastI].ev + slope) * 100; });
     const ds = [{ type: 'line', label: 'Programa vigente', data: sc.map(x => x.pv == null ? null : x.pv * 100), borderColor: brand, backgroundColor: brand, pointRadius: 0, borderWidth: 2.5, tension: .3 }];
     if (sc.some(x => x.pvb != null)) ds.push({ type: 'line', label: 'Línea base contractual', data: sc.map(x => x.pvb == null ? null : x.pvb * 100), borderColor: muted, backgroundColor: muted, pointRadius: 0, borderWidth: 1.5, borderDash: [3, 3], tension: .3 });
-    ds.push({ type: 'bar', label: 'Real', data: sc.map(x => x.ev == null ? null : x.ev * 100), backgroundColor: color(amber, .85), borderRadius: 2 });
+    ds.push({ type: 'bar', label: 'Real (avance capturado)', data: sc.map(x => x.ev == null ? null : x.ev * 100), backgroundColor: color(amber, .85), borderRadius: 2 });
     ds.push({ type: 'line', label: 'Proyección', data: proj, borderColor: amber, borderDash: [6, 4], pointRadius: 0, borderWidth: 2 });
     CHARTS.push(new Chart(sEl, { data: { labels, datasets: ds }, options: Object.assign(base, { plugins: { legend: { labels: { boxWidth: 10, boxHeight: 10 } }, tooltip: { callbacks: { title: it => { const x = sc[it[0].dataIndex]; return `Semana de obra ${obraWeek(x.m) ?? ''} · ${fRange(x.m, x.end)}`; }, label: c => c.raw == null ? '' : `${c.dataset.label}: ${fmtN(c.raw, 1)}%` } } }, scales: { x: { grid: { display: false }, ticks: { maxTicksLimit: 14 } }, y: { min: 0, max: 100, grid: { color: line }, ticks: { callback: v => v + '%' }, title: { display: true, text: '% acumulado' } } } }) }));
   }
@@ -1569,8 +1600,8 @@ function per0(rg) { return true; }
 function vConfig() {
   const sub = S.sub.config;
   return `<div class="v-head"><div><h1>Configuración</h1><p>Datos del proyecto, fases, frentes, plantilla de personal, maquinaria y respaldos.</p></div></div>
-  ${subtabs('config', [['proyecto', 'Proyecto'], ['usuarios', 'Usuarios y accesos'], ['flujos', 'Flujos de aprobación'], ['fases', 'Fases y frentes'], ['hc', 'Personal (HC)'], ['maq', 'Maquinaria'], ['respaldo', 'Respaldo']])}
-  ${sub === 'proyecto' ? cfgProyecto() : sub === 'usuarios' ? cfgUsuarios() : sub === 'flujos' ? cfgFlujos() : sub === 'fases' ? cfgFases() : sub === 'hc' ? cfgHC() : sub === 'maq' ? cfgMaq() : cfgRespaldo()}`;
+  ${subtabs('config', [['proyecto', 'Proyecto'], ['usuarios', 'Usuarios y accesos'], ['flujos', 'Flujos de aprobación'], ['feedback', `Fallas y sugerencias${Store.list('feedback').filter(x => x.estatus === 'Nueva').length ? ' (' + Store.list('feedback').filter(x => x.estatus === 'Nueva').length + ')' : ''}`], ['fases', 'Fases y frentes'], ['hc', 'Personal (HC)'], ['maq', 'Maquinaria'], ['respaldo', 'Respaldo']])}
+  ${sub === 'proyecto' ? cfgProyecto() : sub === 'usuarios' ? cfgUsuarios() : sub === 'flujos' ? cfgFlujos() : sub === 'feedback' ? cfgFeedback() : sub === 'fases' ? cfgFases() : sub === 'hc' ? cfgHC() : sub === 'maq' ? cfgMaq() : cfgRespaldo()}`;
 }
 function cfgProyecto() {
   const p = Store.doc('project') || {}; const ro = Store.readOnly ? 'disabled' : '';
@@ -1605,7 +1636,7 @@ function cfgHC() {
 function cfgMaq() {
   const extra = Store.doc('equip')?.extra || [];
   const fams = {}; EQUIPOS_CEMEX.forEach(e => (fams[e.c] = fams[e.c] || []).push(e));
-  return `<div class="callout">La <b>flota CEMEX</b> viene del listado definitivo validado con Mantenimiento. Al capturar maquinaria se elige tipo, marca y modelo de esta lista, o se escribe libre si es rentada. Si es propia, el propietario se llena solo como CEMEX.</div>
+  return `${cfgEquiposProyecto()}<div class="callout">La <b>flota CEMEX</b> viene del listado definitivo validado con Mantenimiento. Al capturar maquinaria se elige tipo, marca y modelo de esta lista, o se escribe libre si es rentada. Si es propia, el propietario se llena solo como CEMEX.</div>
   <div class="grid2"><div class="card"><h3>Flota CEMEX</h3><div class="sub">${EQUIPOS_CEMEX.length} tipos · ${EQUIPOS_CEMEX.reduce((a, e) => a + e.n, 0)} unidades vigentes</div>
     <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Tipo</th><th>Marca · modelo (unidades)</th></tr></thead><tbody>${Object.entries(fams).map(([f, es]) => `<tr class="grp"><td colspan="2">${esc(f)}</td></tr>${es.map(e => `<tr><td><b>${esc(e.t)}</b></td><td>${e.mm.map(m => `${esc(m[0])} ${esc(m[1])} (${m[2]})${m[3] ? ' <span class="pill warn">por confirmar</span>' : ''}`).join('<br>')}</td></tr>`).join('')}`).join('')}</tbody></table></div></div>
   <div class="card"><h3>Equipos adicionales del proyecto</h3><div class="sub">Tipos, marcas o modelos rentados frecuentes, para que aparezcan como sugerencia</div>
@@ -1628,11 +1659,12 @@ function blankReport() {
 }
 function openReport(rep, opt) {
   if (Store.readOnly) { toast('Tu acceso es de solo consulta.', true); return; }
+  if (!rep && !opt && !openReport._skip) { const d = loadDraft(null); if (d) { (async () => { const ok = await ask(`Tienes un reporte de hoy sin guardar (${fStamp(d._at)}). ¿Lo continúas?`, { si: 'Continuar', no: 'Empezar de nuevo' }); if (!ok) clearDraft(null); openReport._skip = true; openReport(ok ? Object.assign({ _draft: true }, d) : null); openReport._skip = false; })(); return; } }
   if (rep && rep.firma) { toast('El reporte ya está firmado; agrega una nota aclaratoria.', true); return; }
   R = rep ? Object.assign(clone(rep), { pending: {}, firmar: false, err: '', saving: '', _open: new Set(['avance']), _sugg: -1, _hcq: '' }) : blankReport();
   ['avances', 'personal', 'personalExtra', 'cuadrillas', 'maquinaria', 'materiales', 'eventos', 'files'].forEach(k => R[k] = R[k] || []);
   R.weather = R.weather || { am: '', pm: '' };
-  R.maqEq = {}; (R.maquinaria || []).filter(m => m.equipoId).forEach(m => R.maqEq[m.equipoId] = { estado: m.estado, horas: m.horas || '', nota: m.nota || '' }); R.maquinaria = (R.maquinaria || []).filter(m => !m.equipoId);
+  if (!rep || !rep._draft) { R.maqEq = {}; (R.maquinaria || []).filter(m => m.equipoId).forEach(m => R.maqEq[m.equipoId] = { estado: m.estado, horas: m.horas || '', nota: m.nota || '', hi: m.hi ?? '', hf: m.hf ?? '', act: m.actividad || '', causa: m.causa || '', files: m.files || [] }); R.maquinaria = (R.maquinaria || []).filter(m => !m.equipoId); } else { R.maqEq = R.maqEq || {}; delete R._draft; }
   if (!rep && myFrentes() && !myFrentes().includes(R.frente)) R.frente = myFrentes()[0];
   if (opt === 'hito') { R.eventos.push(newEvent('hito')); R._open = new Set(['eventos']); }
   renderComposer(true);
@@ -1666,7 +1698,7 @@ function renderComposer(first) {
 
       <details class="sec" data-k="avance" ${open('avance')}>${secHead('avance', '📐', 'Avance de obra', cat ? 'Cantidad ejecutada hoy por concepto y fase' : 'Sin catálogo cargado: se captura libre', R.avances.length)}
         <div class="sec-body">${cat && activeLinesOn(R.date).length ? `<div class="hint-line">Programados para esta fecha: <b>${new Set(activeLinesOn(R.date).map(l => l.clave)).size}</b> conceptos. Aparecen primero al buscar.</div>` : ''}
-          <div class="rows">${R.avances.map((a, i) => avRow(a, i, cat, phases)).join('')}</div><button class="add-btn" data-action="r-add" data-k="avances">+ Agregar concepto ejecutado</button></div></details>
+          <div class="rows">${R.avances.map((a, i) => avRow(a, i, cat, phases)).join('')}</div>${misCompromisos().length ? `<button class="add-btn" style="border-style:solid" data-action="add-comp">+ Mis compromisos de la semana (${misCompromisos().length})</button>` : ''}<button class="add-btn" data-action="r-add" data-k="avances">+ Agregar concepto ejecutado</button></div></details>
 
       <details class="sec" data-k="personal" ${open('personal')}>${secHead('personal', '👷', 'Personal en sitio', 'Quién estuvo, con su puesto, y cuadrillas de subcontratistas', nHC)}
         <div class="sec-body">
@@ -1703,6 +1735,7 @@ function renderComposer(first) {
   </div></div>`;
   document.body.style.overflow = 'hidden';
   { const hid = (Store.doc('project') || {}).secOcultas || []; $$('details.sec').forEach(d => { if (hid.includes(d.dataset.k)) d.remove(); }); }
+  saveDraft();
   if (usersOn() && myRol() === 'residente') { const ok = mySecciones(); $$('details.sec').forEach(d => { if (!ok.includes(d.dataset.k)) d.remove(); }); }
   const nb = $('.sheet-body'); if (nb && !first) nb.scrollTop = st;
   $$('.drop').forEach(drop => { ['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); })); ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); })); drop.addEventListener('drop', e => addPending(drop.dataset.key, e.dataTransfer.files)); });
@@ -1741,10 +1774,17 @@ function suggHTML(i) {
 }
 function eqComposerHTML() {
   const u = me(); const list = usersOn() && !isAdmin() ? equiposDe(u?.id) : equiposDe(null, R.frente);
-  list.forEach(e => { if (!R.maqEq[e.id]) R.maqEq[e.id] = { estado: 'Operando', horas: '', nota: '' }; });
+  const lastHf = id => { const rr = M.reports().filter(r => r.id !== R.id && r.date <= R.date).slice().reverse(); for (const r of rr) { const m = (r.maquinaria || []).find(x => x.equipoId === id && num(x.hf)); if (m) return num(m.hf); } return ''; };
+  list.forEach(e => { if (!R.maqEq[e.id]) R.maqEq[e.id] = { estado: 'Operando', horas: '', nota: '', hi: lastHf(e.id), hf: '', act: '', causa: '', files: [] }; });
   Object.keys(R.maqEq).forEach(id => { if (!list.some(e => e.id === id) && !Store.get('equipos', id)) delete R.maqEq[id]; });
-  return `<div class="hint-line">${list.length ? `<b>${list.length}</b> equipos a tu cargo. Siguen activos y cargando costo aunque no trabajen: marca cuáles operaron hoy y da de baja los que ya no necesites.` : 'No tienes equipos dados de alta en este frente.'} <button type="button" class="link-btn" data-action="eq-new">+ Dar de alta máquina</button></div>
-  ${list.map(e => { const st = R.maqEq[e.id]; return `<div class="rowc"><div class="fgrid"><div class="w2"><b>${esc(eqName(e))}</b><br><span class="hint-line">${esc(eqId(e) || 'Sin identificación')}${e.operador ? ' · ' + esc(e.operador) : ''} · ${e.prop === 'rentada' ? 'Rentada · ' + esc(e.owner || '') : 'Propia'}</span></div><div class="w2"><span class="mini-l">Hoy</span><div class="seg sm">${['Operando', 'Parada', 'En reparación'].map(x => `<button type="button" data-action="meq" data-id="${e.id}" data-k="${x}" aria-pressed="${st.estado === x}">${x}</button>`).join('')}</div></div><div><span class="mini-l">Horas</span><input class="input sm" type="number" min="0" step="0.5" data-r="maqEq.${e.id}.horas" value="${esc(st.horas)}"></div><div class="w2"><span class="mini-l">Nota</span><input class="input sm" data-r="maqEq.${e.id}.nota" value="${esc(st.nota)}"></div></div><div style="display:flex;gap:6px;margin-top:4px"><button type="button" class="btn sm ghost" data-action="eq-trf" data-id="${e.id}">Transferir</button><button type="button" class="btn sm ghost" data-action="eq-baja" data-id="${e.id}">Dar de baja</button></div></div>`; }).join('')}`;
+  const obl = (Store.doc('project') || {}).valeMaq !== false;
+  return `<div class="hint-line">${list.length ? `<b>${list.length}</b> equipos a tu cargo. Registra el horómetro, lo que hizo cada uno${obl ? ' y la foto del vale del día' : ''}. Si estuvo parado, anota el motivo: sirve para aclaraciones y reclamos.` : 'No tienes equipos asignados en este frente; Control de obra los da de alta.'}${isAdmin() ? ' <button type="button" class="link-btn" data-action="eq-new">+ Dar de alta máquina</button>' : ''}</div>
+  ${list.map(e => { const st = R.maqEq[e.id]; const hrs = num(st.hf) && num(st.hi) ? Math.max(0, num(st.hf) - num(st.hi)) : null; const parada = st.estado !== 'Operando'; const fl = (st.files || []).length + ((R.pending['eq:' + e.id] || []).length);
+    return `<div class="rowc"><div style="display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap;padding-right:6px"><div style="flex:1;min-width:200px"><b>${esc(eqName(e))}</b><br><span class="hint-line">${esc(eqId(e) || 'Sin identificación')}${e.operador ? ' · ' + esc(e.operador) : ''} · ${e.prop === 'rentada' ? 'Rentada · ' + esc(e.owner || '') : 'Propia'}</span></div><div class="seg sm">${['Operando', 'Parada', 'En reparación'].map(x => `<button type="button" data-action="meq" data-id="${e.id}" data-k="${x}" aria-pressed="${st.estado === x}">${x}</button>`).join('')}</div></div>
+    <div class="fgrid" style="padding-right:0"><div><span class="mini-l">Horómetro inicial</span><input class="input sm" type="number" step="0.1" inputmode="decimal" data-r="maqEq.${e.id}.hi" value="${esc(st.hi)}"></div><div><span class="mini-l">Horómetro final</span><input class="input sm" type="number" step="0.1" inputmode="decimal" data-r="maqEq.${e.id}.hf" value="${esc(st.hf)}"></div><div><span class="mini-l">Horas</span><div class="input sm" style="background:var(--surface)">${hrs != null ? fmtN(hrs, 1) : '–'}</div></div>
+    <div class="w2"><span class="mini-l">${parada ? 'Detalle del paro' : 'Actividad realizada'}</span><input class="input sm" data-r="maqEq.${e.id}.act" value="${esc(st.act)}" placeholder="${parada ? 'Qué pasó y desde cuándo' : 'Ej. Excavación en caja, eje 7'}"></div>
+    ${parada ? `<div><span class="mini-l">Motivo atribuible a</span><select class="input sm" data-r="maqEq.${e.id}.causa"><option value="">–</option>${CAUSAS.map(c => `<option ${st.causa === c ? 'selected' : ''}>${c}</option>`).join('')}</select></div>` : ''}</div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px"><label class="btn sm ${fl ? '' : obl && !parada ? 'primary' : ''}">📷 ${fl ? `Vale (${fl})` : 'Foto del vale'}<input type="file" accept="image/*,application/pdf" capture="environment" data-file="eq:${e.id}" hidden></label>${fl ? '<span class="signed">✓ Vale adjunto</span>' : obl && !parada ? '<span class="hint-line">Obligatorio para firmar</span>' : ''}<span style="margin-left:auto"></span><button type="button" class="btn sm ghost" data-action="eq-trf" data-id="${e.id}">Transferir</button>${isAdmin() ? `<button type="button" class="btn sm ghost" data-action="eq-baja" data-id="${e.id}">Dar de baja</button>` : ''}</div></div>`; }).join('')}`;
 }
 function maqRow(m, i) {
   const brands = machBrands(m.tipo), models = machModels(m.tipo, m.marca); const propia = m.prop !== 'rentada';
@@ -1807,6 +1847,7 @@ async function saveReport(mode) {
   const avBad = R.avances.find(a => (a.clave || a.desc) && !num(a.qty)); if (avBad) { R.err = 'Falta la cantidad en algún concepto de avance.'; R._open.add('avance'); return renderComposer(); }
   const empty = !R.avances.length && !R.eventos.length && !R.personal.length && !R.personalExtra.length && !R.cuadrillas.length && !R.maquinaria.length && !Object.keys(R.maqEq || {}).length && !R.materiales.length && !R.notas.trim();
   if (empty) { R.err = 'El reporte está vacío. Captura al menos una sección.'; return renderComposer(); }
+  if (mode === 'sign' && (Store.doc('project') || {}).valeMaq !== false) { const falt = Object.entries(R.maqEq || {}).filter(([id, st]) => st.estado === 'Operando' && !(st.files || []).length && !(R.pending['eq:' + id] || []).length).map(([id]) => eqName(Store.get('equipos', id) || {})); if (falt.length) { R.err = 'Falta la foto del vale de: ' + falt.join(', ') + '.'; R._open.add('maq'); return renderComposer(); } }
   if (mode === 'sign') { const pj = Store.doc('project') || {}; const req = (pj.secOblig || []).filter(k => !(pj.secOcultas || []).includes(k)); const has = { avance: R.avances.length, personal: R.personal.length + R.personalExtra.length + R.cuadrillas.length, maq: Object.keys(R.maqEq || {}).length + R.maquinaria.length, mat: R.materiales.length, eventos: R.eventos.length, gen: (R.notas || '').trim().length + R.files.length + (R.pending.r || []).length }; const miss = req.filter(k => !has[k]); if (miss.length) { R.err = 'Para firmar falta llenar: ' + miss.map(k => SECCIONES.find(x => x[0] === k)[1]).join(', ') + '.'; return renderComposer(); } }
   if (mode === 'sign' && !R.firmar) { R.err = 'Marca la casilla de firma.'; return renderComposer(); }
   const cadErr = cadConflicts(R.avances, R.id); if (cadErr.length) { R.err = cadErr.join(' '); R._open.add('avance'); return renderComposer(); }
@@ -1815,13 +1856,14 @@ async function saveReport(mode) {
     const up = async (key, files) => { const p = R.pending[key] || []; if (!p.length) return files || []; return [...(files || []), ...(await uploadAll(p, (a, b) => { R.saving = `Subiendo ${a} de ${b}…`; renderComposer(); }))]; };
     R.files = await up('r', R.files);
     for (const e of R.eventos) e.files = await up(e.id, e.files);
+    for (const [eid, st] of Object.entries(R.maqEq || {})) st.files = await up('eq:' + eid, st.files || []);
     R.saving = 'Guardando…'; renderComposer();
     const prev = R.id ? Store.get('reports', R.id) : null; const now = Date.now();
     const rep = {
       id: R.id || uid('r'), date: R.date, frente: R.frente.trim(), turno: R.turno, weather: R.weather,
       avances: R.avances.filter(a => (a.clave || a.desc) && num(a.qty)).map(a => ({ clave: a.clave || '', desc: a.clave ? '' : (a.desc || ''), unidad: a.clave ? '' : (a.unidad || ''), fase: a.fase || '', paso: a.paso || '', qty: num(a.qty), nota: a.nota || '', del: (a.del || '').trim(), al: (a.al || '').trim(), eje: (a.eje || '').trim() })),
       personal: R.personal, personalExtra: R.personalExtra.filter(p => p.nombre), cuadrillas: R.cuadrillas.filter(c => c.empresa || c.oficio || num(c.n)).map(c => Object.assign({}, c, { n: num(c.n) })),
-      maquinaria: [...Object.entries(R.maqEq || {}).map(([id, st]) => { const e = Store.get('equipos', id) || {}; return { equipoId: id, tipo: e.tipo || '', marca: e.marca || '', modelo: e.modelo || '', n: 1, prop: e.prop || 'propia', owner: e.owner || '', horas: num(st.horas), estado: st.estado || 'Operando', eco: e.eco || '', placas: e.placas || '', nota: st.nota || '' }; }), ...R.maquinaria.filter(m => m.tipo).map(m => ({ tipo: m.tipo, marca: m.marca || '', modelo: m.modelo || '', n: num(m.n) || 1, prop: m.prop === 'rentada' ? 'rentada' : 'propia', owner: m.prop === 'rentada' ? (m.owner || '') : 'CEMEX', horas: num(m.horas), estado: m.estado || 'Operando', eco: m.eco || '' }))],
+      maquinaria: [...Object.entries(R.maqEq || {}).map(([id, st]) => { const e = Store.get('equipos', id) || {}; const hi = num(st.hi), hf = num(st.hf); return { equipoId: id, tipo: e.tipo || '', marca: e.marca || '', modelo: e.modelo || '', n: 1, prop: e.prop || 'propia', owner: e.owner || '', hi: st.hi === '' ? null : hi, hf: st.hf === '' ? null : hf, horas: hi && hf ? Math.max(0, hf - hi) : num(st.horas), actividad: st.act || '', causa: st.causa || '', estado: st.estado || 'Operando', eco: e.eco || '', placas: e.placas || '', nota: st.nota || '', files: st.files || [] }; }), ...R.maquinaria.filter(m => m.tipo).map(m => ({ tipo: m.tipo, marca: m.marca || '', modelo: m.modelo || '', n: num(m.n) || 1, prop: m.prop === 'rentada' ? 'rentada' : 'propia', owner: m.prop === 'rentada' ? (m.owner || '') : 'CEMEX', horas: num(m.horas), estado: m.estado || 'Operando', eco: m.eco || '' }))],
       materiales: R.materiales.filter(m => m.material).map(m => Object.assign({}, m, { qty: num(m.qty) })),
       eventos: R.eventos.filter(e => e.titulo || e.texto), notas: R.notas.trim(), files: R.files,
       author: prev ? prev.author : { name: sess.name, role: sess.role, puesto: sess.puesto || '', uid: sess.uid || '' },
@@ -1830,6 +1872,7 @@ async function saveReport(mode) {
     };
     if (mode === 'sign') { const hash = await sha256(reportContent(rep)); rep.firma = { by: sess.name, role: sess.role, puesto: sess.puesto || '', at: now, hash }; rep.history.push({ at: now, by: sess.name, role: sess.role, action: 'firmó el reporte' }); }
     await Store.put('reports', rep);
+    clearDraft(null); clearDraft(rep.id);
     const signed = !!rep.firma, d = rep.date; R = null; $('#modal-root').innerHTML = ''; document.body.style.overflow = '';
     toast(signed ? 'Reporte firmado y cerrado.' : 'Borrador guardado. Recuerda firmarlo al terminar el día.');
     Object.assign(S, { view: 'bitacora', anchor: pd(d) }); if (S.period === 'todo' || S.period === 'rango') S.period = 'semana';
@@ -1901,7 +1944,7 @@ function reportDetail(id) {
     <div class="dv-meta"><div><small>Fecha</small><b>${fDMY(pd(r.date))}</b></div><div><small>Frente</small><b>${esc(r.frente || '–')}</b></div><div><small>Turno</small><b>${esc(r.turno || '–')}</b></div><div><small>Clima</small><b>${[r.weather?.am, r.weather?.pm].filter(Boolean).map(k => WX[k]?.icon + ' ' + WX[k]?.label).join(' / ') || '–'}</b></div></div>
     ${(r.avances || []).length ? `<h2>Avance de obra</h2><table><thead><tr><th>Clave</th><th>Concepto</th><th>Fase</th><th>Cantidad</th><th>Ubicación / nota</th></tr></thead><tbody>${r.avances.map(a => { const c = M.cmap().get(a.clave); return `<tr><td>${esc(a.clave)}</td><td>${esc(c?.desc || a.desc)}</td><td>${esc(a.fase)}</td><td>${fmtQ(a.qty)} ${esc(c?.unidad || a.unidad || '')}</td><td>${a.del ? esc(a.del) + ' a ' + esc(a.al) + (a.eje ? ' · ' + esc(a.eje) : '') + '<br>' : ''}${esc(a.nota)}</td></tr>`; }).join('')}</tbody></table>` : ''}
     ${people.length || (r.cuadrillas || []).length ? `<h2>Personal (${M.headcount(r)})</h2><table><thead><tr><th>Nombre / empresa</th><th>Puesto / oficio</th><th>Personas</th></tr></thead><tbody>${people.map(x => `<tr><td>${esc(x[0])}${x[2] ? ` <span class="muted">· ${esc(x[2])}</span>` : ''}</td><td>${esc(x[1] || '')}</td><td>1</td></tr>`).join('')}${(r.cuadrillas || []).map(c => `<tr><td>${esc(c.empresa)}</td><td>${esc(c.oficio)}</td><td>${fmtN(c.n)}</td></tr>`).join('')}</tbody></table>` : ''}
-    ${(r.maquinaria || []).length ? `<h2>Maquinaria y equipo</h2><table><thead><tr><th>Equipo</th><th>Cant.</th><th>Propiedad</th><th>Horas</th><th>Estado</th><th>No. eco.</th></tr></thead><tbody>${r.maquinaria.map(m => `<tr><td>${esc(m.tipo)} ${esc(m.marca)} ${esc(m.modelo)}${m.placas ? `<br><span class="muted">Placas ${esc(m.placas)}</span>` : ''}</td><td>${m.n}</td><td>${m.prop === 'rentada' ? 'Rentada · ' + esc(m.owner) : 'Propia · CEMEX'}</td><td>${m.horas || '–'}</td><td>${esc(m.estado)}</td><td>${esc(m.eco)}</td></tr>`).join('')}</tbody></table>` : ''}
+    ${(r.maquinaria || []).length ? `<h2>Maquinaria y equipo</h2><table><thead><tr><th>Equipo</th><th>Cant.</th><th>Propiedad</th><th>Horas</th><th>Estado</th><th>No. eco.</th></tr></thead><tbody>${r.maquinaria.map(m => `<tr><td>${esc(m.tipo)} ${esc(m.marca)} ${esc(m.modelo)}${m.placas ? `<br><span class="muted">Placas ${esc(m.placas)}</span>` : ''}</td><td>${m.n}</td><td>${m.prop === 'rentada' ? 'Rentada · ' + esc(m.owner) : 'Propia · CEMEX'}</td><td>${m.hi != null || m.hf != null ? `${fmtN(m.hi, 1)} → ${fmtN(m.hf, 1)}<br>` : ''}${m.horas || '–'}</td><td>${esc(m.estado)}${m.causa ? `<br><span class="muted">Atribuible a ${esc(m.causa)}</span>` : ''}${m.actividad ? `<br>${esc(m.actividad)}` : ''}${(m.files || []).map(f => `<br><a href="${esc(Store.fileUrl(f))}" target="_blank" rel="noopener">📄 Vale</a>`).join('')}</td><td>${esc(m.eco)}</td></tr>`).join('')}</tbody></table>` : ''}
     ${(r.materiales || []).length ? `<h2>Materiales</h2><table><thead><tr><th>Material</th><th>Cantidad</th><th>Proveedor</th><th>Folio</th></tr></thead><tbody>${r.materiales.map(m => `<tr><td>${esc(m.material)}</td><td>${fmtQ(m.qty)} ${esc(m.unidad || '')}</td><td>${esc(m.proveedor || '')}</td><td>${esc(m.folio || '')}</td></tr>`).join('')}</tbody></table>` : ''}
     ${(r.eventos || []).length ? `<h2>Eventos y notas de bitácora</h2>${r.eventos.map(e => `<div style="border-left:3px solid ${e.clase === 'hito' ? '#D99A00' : (EV[e.tipo]?.color || '#ccc')};padding:4px 0 4px 10px;margin:8px 0"><div class="muted" style="font-size:12px">${esc(EV[e.tipo]?.label || '')}${e.causa ? ' · atribuible a ' + esc(e.causa) : ''}${num(e.horas) ? ' · ' + e.horas + ' h de paro' : ''}${e.clase === 'hito' ? ' · ★ HITO' : ''}${e.fase ? ' · ' + esc(e.fase) : ''}${e.atencion ? (e.resuelta ? ` · Alerta atendida por ${esc(e.resueltaPor || '')}` : ' · ALERTA ABIERTA') : ''}</div><b>${esc(e.titulo)}</b><div style="white-space:pre-wrap">${esc(e.texto)}</div></div>`).join('')}` : ''}
     ${r.notas ? `<h2>Notas generales</h2><p style="white-space:pre-wrap">${esc(r.notas)}</p>` : ''}
@@ -2030,7 +2073,7 @@ const ALIAS = {
   clave: ['clave', 'codigo', 'cod', 'clave concepto', 'clave del concepto', 'id concepto'], partida: ['partida', 'capitulo', 'grupo', 'especialidad', 'subpartida'],
   desc: ['descripcion', 'concepto', 'actividad', 'descripcion del concepto', 'nombre de tarea', 'tarea'], unidad: ['unidad', 'u', 'um', 'ud', 'unid'],
   cant: ['cantidad', 'cant', 'volumen', 'cantidad total', 'cantidad fase'], pu: ['pu', 'p u', 'precio unitario', 'precio', 'p unitario'], importe: ['importe', 'total', 'monto'],
-  cc: ['centro de costos', 'centro costos', 'cc', 'zona'], fase: ['fase', 'etapa', 'faseo', 'fase de obra'], ini: ['inicio', 'fecha inicio', 'comienzo', 'fecha de inicio', 'start'], fin: ['fin', 'fecha fin', 'termino', 'fecha de termino', 'finish', 'final', 'fecha final'],
+  cc: ['centro de costos', 'centro costos', 'cc', 'zona'], insumo: ['insumo', 'material', 'insumo o material'], catins: ['categoria', 'categoria del insumo'], cu: ['costo unitario', 'costo'], fase: ['fase', 'etapa', 'faseo', 'fase de obra'], ini: ['inicio', 'fecha inicio', 'comienzo', 'fecha de inicio', 'start'], fin: ['fin', 'fecha fin', 'termino', 'fecha de termino', 'finish', 'final', 'fecha final'],
   nombre: ['nombre', 'nombre completo', 'empleado', 'colaborador'], puesto: ['puesto', 'posicion', 'cargo', 'categoria'], rolp: ['rol en plataforma', 'rol plataforma', 'acceso a plataforma', 'rol'], frentes: ['frentes', 'frente', 'frente asignado', 'frentes a su cargo'], empresa: ['empresa', 'area', 'compania', 'departamento'], num: ['no empleado', 'numero de empleado', 'num empleado', 'nomina', 'no de empleado', 'numero empleado'],
   mes: ['mes', 'periodo'], ingPpto: ['ingreso ppto', 'ingreso presupuesto', 'venta ppto', 'ingresos ppto'], cosPpto: ['costo ppto', 'costo presupuesto', 'costos ppto'], ing: ['ingreso real', 'ingreso', 'venta real', 'ventas', 'ingresos'], cos: ['costo real', 'costo', 'costos'], dep: ['depreciacion', 'depreciacion real']
 };
@@ -2056,6 +2099,8 @@ async function importFile(kind, file) {
     if (kind === 'backup') return restoreBackup(file);
     if (kind === 'plantilla') return importPlantillaBase(file);
     if (kind === 'remis') return importRemisiones(file);
+    if (kind === 'recetas') return importRecetas(file);
+    if (kind === 'prono') return importProno(file);
     if (kind === 'modlines') return modLinesFromExcel(file);
     if (kind === 'catalog') {
       const adv = await parseCatalogFile(file);
@@ -2119,7 +2164,7 @@ async function importFile(kind, file) {
         const rol = ROL_BY_LABEL[norm(String(r.rolp ?? '').trim())] || rolFromPuesto(rec.puesto); if (rol && !users().some(u => norm(u.nombre) === norm(nombre))) cand.push({ nombre, puesto: rec.puesto, num: rec.num, rol, frentes: String(r.frentes ?? '').split(',').map(x => x.trim()).filter(Boolean) }); });
       await Store.setArr('hc', out); await Store.log('cargó plantilla de personal', file.name, `${n} nuevas, ${out.length} en total`);
       if (cand.length && isAdmin() && await ask(`Del HC, ${cand.length} personas tienen un puesto que usa la plataforma:\n${cand.slice(0, 12).map(c => `• ${c.nombre} · ${ROL[c.rol].label}`).join('\n')}${cand.length > 12 ? `\n… y ${cand.length - 12} más` : ''}\n\n¿Darles acceso? Entrarán con su nombre y un token personal, y verán solo lo de su rol.`, { si: 'Dar acceso' })) {
-        const urows = clone((Store.doc('users') || {}).rows || []); cand.forEach(c => urows.push(Object.assign({ id: uid('u'), createdAt: Date.now(), secciones: [], token: genToken() }, c)));
+        const urows = clone((Store.doc('users') || {}).rows || []); cand.forEach(c => urows.push(Object.assign({ id: uid('u'), createdAt: Date.now(), secciones: [], token: genToken() }, GHSync.dir ? { proyectos: [GHSync.proj] } : {}, c)));
         const p = Object.assign({}, Store.doc('project') || {}); const nf = [...new Set(cand.flatMap(c => c.frentes))].filter(f => !(p.frentes || []).includes(f)); if (nf.length) { p.frentes = [...(p.frentes || []), ...nf]; await Store.setDoc('project', p); }
         await Store.setDoc('users', { rows: urows }); await Store.log('creó accesos desde el HC', file.name, `${cand.length} usuarios`);
         toast(`HC cargado y ${cand.length} accesos creados. Sus tokens están en Configuración › Usuarios y accesos.`); S.view = 'config'; S.sub.config = 'usuarios'; render(); return;
@@ -2233,7 +2278,7 @@ function vProno() {
     <div class="period-nav"><button data-action="pmes" data-k="-1">${ICON.left}</button><div class="pl"><b>${cap(MES[P.a.getMonth()])} ${P.a.getFullYear()}</b><span>${N} días · corte al día ${el}</span></div><button data-action="pmes" data-k="1">${ICON.right}</button></div>
     <select class="input" style="width:auto;max-width:260px" data-input="pfase"><option value="">Todas las fases</option>${ph.map(p => `<option ${S.pronoFase === p.name ? 'selected' : ''}>${esc(p.name)}</option>`).join('')}</select>
     ${ccs.length ? `<select class="input" style="width:auto;max-width:260px" data-input="pcc"><option value="">Todos los centros de costo</option>${ccs.map(c => `<option ${S.pronoCC === c ? 'selected' : ''}>${esc(c)}</option>`).join('')}</select>` : ''}
-    <button class="btn sm" style="margin-left:auto" data-action="xlsx-prono">${ICON.dl} Excel del mes</button></div>
+    <span style="margin-left:auto;display:flex;gap:8px">${isAdmin() && !Store.readOnly ? `<label class="btn sm">${ICON.up} Cargar pronóstico<input type="file" accept=".xlsx,.xlsm,.xls,.csv" data-import="prono" hidden></label>` : ''}<button class="btn sm" data-action="xlsx-prono">${ICON.dl} Excel del mes</button></span></div>
   ${fsel && (fsel.responsables || fsel.plano) ? `<div class="callout" style="display:flex;gap:14px;align-items:center">${fsel.plano ? `<img src="${esc(Store.fileUrl(fsel.plano))}" alt="" style="width:120px;height:72px;object-fit:cover;border-radius:8px">` : ''}<span><b>${esc(fsel.name)}</b>${fsel._ini ? ` · ${fShort(fsel._ini)} – ${fShort(fsel._fin)} ${fsel._fin.getFullYear()}` : ''}${fsel.responsables ? `<br>Responsables: ${esc(fsel.responsables)}` : ''}</span></div>` : ''}
   ${P.captured ? `<div class="callout">Este mes usa el <b>pronóstico capturado por el equipo</b> (${P.captured} conceptos). Si se calculara solo con el programa de obra serían ${M.money() ? fmtM(P.progTotal) : fmtN(P.progTotal)}. Cada renglón se puede ajustar a mano.</div>` : ''}
   <section class="kpis k6" style="margin-top:0">
@@ -2557,16 +2602,19 @@ const ROL = {
   consulta: { label: 'Consulta (solo lectura)', ro: true }
 };
 // Lo que ve cada rol; los que no aparecen ven todo
-const ROL_VIEWS = { residente: ['bitacora', 'pend', 'calidad', 'plan', 'hitos', 'equipos', 'almacen'], almacen: ['almacen', 'equipos', 'bitacora', 'pend'] };
+const ROL_VIEWS = { residente: ['midia', 'bitacora', 'plan', 'pend', 'calidad', 'equipos', 'almacen', 'hitos'], almacen: ['almacen', 'equipos', 'bitacora', 'pend'] };
 const SECCIONES = [['avance', 'Avance de obra'], ['personal', 'Personal'], ['maq', 'Maquinaria'], ['mat', 'Materiales'], ['eventos', 'Eventos y notas'], ['gen', 'Fotos y notas generales']];
 const CAUSAS = ['Cliente', 'Proveedor', 'Interno (CEMEX)', 'Subcontratista', 'Clima', 'Autoridad o terceros'];
-const users = () => ((Store.doc('users') || {}).rows || []).filter(u => !u.baja);
-const usersOn = () => users().length > 0;
-function me() { const s = Session.get(); return s && s.uid ? users().find(u => u.id === s.uid) || null : null; }
+const users = () => allUsers().filter(inProj);
+const usersOn = () => allUsers().length > 0;
+function me() { const s = Session.get(); return s && s.uid ? allUsers().find(u => u.id === s.uid) || null : null; }
 function myRol() { if (!usersOn()) return 'super'; const u = me(); return u ? u.rol : 'consulta'; }
-function canView(v) { const l = ROL_VIEWS[myRol()]; return !l || l.includes(v); }
+function canView(v) { if (v === 'midia') return usersOn() && myRol() === 'residente'; if (v === 'portafolio') return Store.mode === 'github' && (myProjects().length > 1 || (isAdmin() && !Store.readOnly)); const l = ROL_VIEWS[myRol()]; return !l || l.includes(v); }
 function isAdmin() { return !!ROL[myRol()]?.admin; }
 function homeView() { const l = ROL_VIEWS[myRol()]; return l ? l[0] : 'tablero'; }
+Object.assign(Store, { _doc: Store.doc, _setDoc: Store.setDoc });
+Store.doc = function (k) { if (k === 'users' && GHSync.dir) return { rows: GHSync.dir.usuarios || [] }; return this._doc(k); };
+Store.setDoc = async function (k, o) { if (k === 'users' && GHSync.dir) { GHSync.dir.usuarios = clone(o.rows || []); GHSync.dirDirty = true; GHSync.schedule(); this.emit(); return; } return this._setDoc(k, o); };
 function mySecciones() { const u = me(); return u && u.secciones && u.secciones.length ? u.secciones : SECCIONES.map(s => s[0]); }
 function myFrentes() { const u = me(); return u && u.frentes && u.frentes.length ? u.frentes : null; }
 Object.defineProperty(Store, 'readOnly', { get() { return !!this._ro || (usersOn() && !!ROL[myRol()]?.ro); }, set(v) { this._ro = v; }, configurable: true });
@@ -2582,7 +2630,7 @@ function loginCard(inner) {
   loginRoot().innerHTML = `<div class="login"><div class="login-card"><div class="brand" style="margin-bottom:18px"><div class="brand-mark">${ICON.mark}</div><div><div class="brand-name">Bitácora de Obra</div><div class="brand-sub">${esc(p.name || 'Control de proyecto · Construcción')}</div></div></div>${inner}</div></div>`;
 }
 function showLogin(err) {
-  const list = users().slice().sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
+  const list = allUsers().slice().sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
   const sel = S._loginUser || '';
   loginCard(`<h2 style="font-size:20px;margin-bottom:4px">Iniciar sesión</h2><p class="hint-line" style="margin:0 0 16px">Elige tu nombre y escribe tu token personal. Cada reporte, firma y cambio queda a tu nombre.</p>
     <div class="field"><label for="lg-u">Tu nombre</label><select class="input" id="lg-u" data-login="u"><option value="">Selecciona tu nombre</option>${list.map(x => `<option value="${x.id}" ${x.id === sel ? 'selected' : ''}>${esc(x.nombre)}</option>`).join('')}</select></div>
@@ -2593,7 +2641,7 @@ function showLogin(err) {
   setTimeout(() => (sel ? $('#lg-p') : $('#lg-u'))?.focus(), 30);
 }
 async function doLogin() {
-  const id = $('#lg-u').value; const u = users().find(x => x.id === id); const p = ($('#lg-p')?.value || '').trim();
+  const id = $('#lg-u').value; const u = allUsers().find(x => x.id === id); const p = ($('#lg-p')?.value || '').trim();
   S._loginUser = id;
   if (!u) return showLogin('Selecciona tu nombre.');
   if (!p) return showLogin('Escribe tu token personal.');
@@ -2601,7 +2649,7 @@ async function doLogin() {
   if (!ok) return showLogin(u.token || u.pass ? 'El token no coincide con tu nombre.' : 'Aún no tienes token; pídelo a Control de obra.');
   Session.set({ uid: u.id, name: u.nombre, role: ROL[u.rol]?.label || u.rol, rol: u.rol, puesto: u.puesto || ROL[u.rol]?.label || '' });
   try { if (window.Notification && Notification.permission === 'default' && u.rol === 'residente') Notification.requestPermission(); } catch (e) { }
-  S._loginUser = ''; hideLogin(); S.view = homeView(); await Store.log('inició sesión', u.nombre, ROL[u.rol]?.label || ''); render();
+  S._loginUser = ''; hideLogin(); if (GHSync.dir) { const ps = myProjects(); if (ps.length && !ps.some(p => p.id === GHSync.proj)) await switchProject(ps[0].id, true); } S.view = GHSync.dir && myProjects().length > 1 && isAdmin() ? 'portafolio' : homeView(); await Store.log('inició sesión', u.nombre, ROL[u.rol]?.label || ''); render();
 }
 function logout() { Session.set(null); try { localStorage.removeItem('bitacora.session'); } catch (e) { } S.view = 'tablero'; render(); }
 function showConnect(err) {
@@ -2634,7 +2682,7 @@ const b64dec = b64 => { const bin = atob((b64 || '').replace(/\s/g, '')); const 
 const fileB64 = f => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1]); r.onerror = rej; r.readAsDataURL(f); });
 const who = () => (Session.get() || {}).name || 'Sin sesión';
 const GHSync = {
-  KEY: 'bitacora.gh', sha: { base: null, ops: null }, dirty: { ops: {}, d: new Set(), arr: new Set() }, timer: null, saving: false, lastCommit: null, urls: new Map(), loading: new Set(), state: 'ok', pollT: null,
+  KEY: 'bitacora.gh', folder: 'datos', proj: null, dir: null, dirSha: null, dirDirty: false, sha: { base: null, ops: null }, dirty: { ops: {}, d: new Set(), arr: new Set() }, timer: null, saving: false, lastCommit: null, urls: new Map(), loading: new Set(), state: 'ok', pollT: null,
   cfg() { try { return JSON.parse(localStorage.getItem(this.KEY) || 'null'); } catch (e) { return this._c || null; } },
   setCfg(c) { this._c = c; try { localStorage.setItem(this.KEY, JSON.stringify(c)); } catch (e) { } },
   api(path) { const c = this.cfg(); return `https://api.github.com/repos/${c.owner}/${c.repo}/${path}`; },
@@ -2659,11 +2707,15 @@ const GHSync = {
       Store.c = out;
     }
   },
-  cacheNow() { try { IDB.put('kv', 'gh-cache', { c: Store.c, d: Store.d, arr: Store.arr }).catch(() => { }); } catch (e) { } },
-  async pull(keep) { const [b, o] = await Promise.all([this.read('datos/base.json'), this.read('datos/ops.json')]); this.sha.base = b.sha; this.sha.ops = o.sha; this.apply('base', b.data, keep); this.apply('ops', o.data, keep); this.lastCommit = await this.commit(); this.cacheNow(); },
+  cacheNow() { try { IDB.put('kv', 'gh-cache:' + this.folder, { c: Store.c, d: Store.d, arr: Store.arr }).catch(() => { }); } catch (e) { } },
+  async pull(keep) { const [b, o] = await Promise.all([this.read(`${this.folder}/base.json`), this.read(`${this.folder}/ops.json`)]); this.sha.base = b.sha; this.sha.ops = o.sha; this.apply('base', b.data, keep); this.apply('ops', o.data, keep); this.lastCommit = await this.commit(); this.cacheNow(); },
   async commit() { try { const c = this.cfg(); const j = await (await this.req(this.api(`commits?sha=${c.branch}&per_page=1&t=${Date.now()}`))).json(); return j[0]?.sha || null; } catch (e) { return null; } },
+  pickProj() { let last = null; try { last = localStorage.getItem('bitacora.proj'); } catch (e) { } const p = (this.dir?.proyectos || []).find(x => x.id === last) || (this.dir?.proyectos || [])[0]; if (p) { this.proj = p.id; this.folder = p.carpeta; } },
   async start() {
-    let cache = null; const dirty = this.loadDirty(); try { await IDB.open(); cache = await IDB.get('kv', 'gh-cache'); for (const [k, b] of await IDB.all('files')) Store.localUrls.set(k, URL.createObjectURL(b)); } catch (e) { }
+    try { await IDB.open(); } catch (e) { }
+    try { const d = await this.read('directorio.json'); if (d.data) { this.dir = d.data; this.dirSha = d.sha; this.pickProj(); try { IDB.put('kv', 'gh-dir', this.dir).catch(() => { }); } catch (x) { } } }
+    catch (e) { if (!(e instanceof TypeError) && navigator.onLine !== false) throw e; try { const dc = await IDB.get('kv', 'gh-dir'); if (dc) { this.dir = dc; this.pickProj(); } } catch (x) { } }
+    let cache = null; const dirty = this.loadDirty(); try { cache = await IDB.get('kv', 'gh-cache:' + this.folder); for (const [k, b] of await IDB.all('files')) Store.localUrls.set(k, URL.createObjectURL(b)); } catch (e) { }
     try {
       await this.pull(false);
       if (cache && dirty && (dirty.d.size || dirty.arr.size || Object.values(dirty.ops).some(x => x.size))) {
@@ -2678,21 +2730,21 @@ const GHSync = {
       Store.mode = 'github'; Store.ready = true; this.setState('offline'); Store.emit(); window.addEventListener('online', () => this.flush(), { once: true }); return;
     }
      Store.mode = 'github'; Store.ready = true; this.setState('ok'); Store.emit(); clearInterval(this.pollT); this.pollT = setInterval(() => this.poll(), 30000); document.addEventListener('visibilitychange', () => { if (!document.hidden) this.poll(); }); },
-  saveDirty() { try { localStorage.setItem('bitacora.gh.dirty', JSON.stringify({ ops: Object.fromEntries(Object.entries(this.dirty.ops).map(([k, v]) => [k, [...v]])), d: [...this.dirty.d], arr: [...this.dirty.arr] })); } catch (e) { } },
-  loadDirty() { try { const x = JSON.parse(localStorage.getItem('bitacora.gh.dirty') || 'null'); if (!x) return null; return { ops: Object.fromEntries(Object.entries(x.ops || {}).map(([k, v]) => [k, new Set(v)])), d: new Set(x.d || []), arr: new Set(x.arr || []) }; } catch (e) { return null; } },
+  saveDirty() { try { localStorage.setItem('bitacora.gh.dirty.' + this.folder, JSON.stringify({ ops: Object.fromEntries(Object.entries(this.dirty.ops).map(([k, v]) => [k, [...v]])), d: [...this.dirty.d], arr: [...this.dirty.arr] })); } catch (e) { } },
+  loadDirty() { try { const x = JSON.parse(localStorage.getItem('bitacora.gh.dirty.' + this.folder) || 'null'); if (!x) return null; return { ops: Object.fromEntries(Object.entries(x.ops || {}).map(([k, v]) => [k, new Set(v)])), d: new Set(x.d || []), arr: new Set(x.arr || []) }; } catch (e) { return null; } },
   mark(part, key, id) { if (part === 'ops') (this.dirty.ops[key] = this.dirty.ops[key] || new Set()).add(id); else if (key === 'd') this.dirty.d.add(id); else this.dirty.arr.add(id); this.saveDirty(); this.schedule(); },
   schedule(ms) { clearTimeout(this.timer); this.setState('pendiente'); this.timer = setTimeout(() => this.flush(), ms || 1200); },
-  pending() { return this.dirty.d.size || this.dirty.arr.size || Object.values(this.dirty.ops).some(s => s.size); },
+  pending() { return this.dirDirty || this.dirty.d.size || this.dirty.arr.size || Object.values(this.dirty.ops).some(s => s.size); },
   async flush() {
     if (this.saving) return this.schedule();
     try { await this.uploadPending(); } catch (e) { }
     this.timer = null; this.saving = true; this.setState('guardando');
-    try { if (this.dirty.d.size || this.dirty.arr.size) await this.push('base'); if (Object.values(this.dirty.ops).some(s => s.size)) await this.push('ops'); this.lastCommit = await this.commit(); this.setState('ok'); }
+    try { if (this.dirty.d.size || this.dirty.arr.size) await this.push('base'); if (Object.values(this.dirty.ops).some(s => s.size)) await this.push('ops'); this.updResumen(); if (this.dirDirty) await this.pushDir(); this.lastCommit = await this.commit(); this.setState('ok'); }
     catch (e) { if (e instanceof TypeError || navigator.onLine === false) { this.setState('offline'); window.addEventListener('online', () => this.flush(), { once: true }); setTimeout(() => this.schedule(), 30000); return; } this.setState('error'); toast('No se pudo guardar en GitHub (' + e.message + '). Tus cambios siguen en este navegador y se reintenta solo.', true); setTimeout(() => this.schedule(), 20000); }
     finally { this.saving = false; }
   },
   async push(part, retry) {
-    const file = `datos/${part}.json`; const data = part === 'base' ? { d: Store.d, arr: Store.arr, _meta: { by: who(), at: Date.now() } } : { c: Store.c, _meta: { by: who(), at: Date.now() } };
+    const file = `${this.folder}/${part}.json`; const data = part === 'base' ? { d: Store.d, arr: Store.arr, _meta: { by: who(), at: Date.now() } } : { c: Store.c, _meta: { by: who(), at: Date.now() } };
     const sent = part === 'base' ? { d: new Set(this.dirty.d), arr: new Set(this.dirty.arr) } : Object.fromEntries(Object.entries(this.dirty.ops).map(([k, s]) => [k, new Set(s)]));
     try {
       this.sha[part] = await this.write(file, data, this.sha[part], `${who()}: ${part === 'base' ? 'proyecto y catálogo' : 'bitácora'}`);
@@ -2702,9 +2754,15 @@ const GHSync = {
       throw e;
     }
   },
+  async pushDir(retry) {
+    try { this.dirSha = await this.write('directorio.json', this.dir, this.dirSha, `${who()}: directorio de proyectos y usuarios`); this.dirDirty = false; try { IDB.put('kv', 'gh-dir', this.dir).catch(() => { }); } catch (x) { } }
+    catch (e) { if (!retry && (e.status === 409 || e.status === 422)) { const r = await this.read('directorio.json'); const rem = r.data || { proyectos: [], usuarios: [] }; const mg = (a, b) => { const m = new Map((a || []).map(x => [x.id, x])); (b || []).forEach(x => m.set(x.id, Object.assign({}, m.get(x.id) || {}, x))); return [...m.values()]; }; this.dir = { proyectos: mg(rem.proyectos, this.dir.proyectos), usuarios: mg(rem.usuarios, this.dir.usuarios) }; this.dirSha = r.sha; return this.pushDir(true); } throw e; }
+  },
+  updResumen() { if (!this.dir || !this.proj || !Store.ready) return; const p = this.dir.proyectos.find(x => x.id === this.proj); if (!p || (p.resumen && Date.now() - p.resumen.at < 5 * 60e3)) return; try { p.resumen = resumenProyecto(); const pj = Store.doc('project') || {}; if (pj.name) p.nombre = pj.name; p.cliente = pj.client || p.cliente || ''; p.gerencia = pj.gerencia || p.gerencia || ''; this.dirDirty = true; } catch (e) { } },
   async poll() {
     if (Store.mode !== 'github' || this.saving || this.timer || document.hidden) return;
     const c = await this.commit(); if (!c || c === this.lastCommit) return;
+    if (this.dir && !this.dirDirty) { try { const d = await this.read('directorio.json'); if (d.data) { this.dir = d.data; this.dirSha = d.sha; } } catch (e) { } }
     try { const before = JSON.stringify([Store.c.reports.length, Store.c.pend.length]); await this.pull(true); Store.emit(); if (JSON.stringify([Store.c.reports.length, Store.c.pend.length]) !== before) toast('Se actualizó con cambios de otra persona.'); } catch (e) { }
   },
   async uploadPending() {
@@ -2718,7 +2776,7 @@ const GHSync = {
   async upload(file, direct) {
     if (!direct) { try { return await this.upload(file, true); } catch (e) { if (!(e instanceof TypeError) && navigator.onLine !== false) throw e; const lid = uid('f'); try { await IDB.open(); await IDB.put('files', lid, file); } catch (x) { } Store.localUrls.set(lid, URL.createObjectURL(file)); let q = []; try { q = JSON.parse(localStorage.getItem('bitacora.gh.up') || '[]'); } catch (x) { } q.push(lid); try { localStorage.setItem('bitacora.gh.up', JSON.stringify(q)); } catch (x) { } this.setState('offline'); return { localId: lid }; } }
     const c = this.cfg(); const nm = file.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w.\-]+/g, '_');
-    const path = `archivos/${iso(TODAY()).slice(0, 7)}/${Date.now()}_${nm}`;
+    const path = `${this.folder === 'datos' ? 'archivos' : this.folder + '/archivos'}/${iso(TODAY()).slice(0, 7)}/${Date.now()}_${nm}`;
     await this.req(this.api(`contents/${path}`), { method: 'PUT', body: JSON.stringify({ message: `${who()}: subió ${file.name}`, content: await fileB64(file), branch: c.branch }) });
     this.urls.set(path, URL.createObjectURL(file)); return { ghPath: path };
   },
@@ -2750,6 +2808,7 @@ function openUser(id) {
   <div class="row2"><div class="field"><label>Nombre completo</label><input class="input" id="us-n" value="${esc(u.nombre || '')}" list="dl-hcu"><datalist id="dl-hcu">${(Store.arr.hc || []).map(h => `<option value="${esc(h.nombre)}">`).join('')}</datalist></div><div class="field"><label>Puesto</label><input class="input" id="us-p" value="${esc(u.puesto || '')}"></div></div>
   <div class="row2"><div class="field"><label>Rol en la plataforma</label><select class="input" id="us-r">${Object.entries(ROL).map(([k, r]) => `<option value="${k}" ${u.rol === k ? 'selected' : ''}>${r.label}</option>`).join('')}</select></div><div class="field"><label>No. de empleado</label><input class="input" id="us-num" value="${esc(u.num || '')}"></div></div>
   <div class="field"><label>Frentes a su cargo <span class="hint">Sin marcar = todos. Se le prellenan en el reporte.</span></label><div class="chips" id="us-fr">${fr.map(f => `<label class="chip"><input type="checkbox" value="${esc(f)}" ${(u.frentes || []).includes(f) ? 'checked' : ''}> ${esc(f)}</label>`).join('') || '<span class="hint-line">Agrega frentes en Configuración › Fases y frentes, o escríbelos abajo.</span>'}</div><input class="input sm" id="us-frx" placeholder="Otros frentes, separados por coma" style="margin-top:6px"></div>
+  ${GHSync.dir ? `<div class="field"><label>Proyectos a los que entra</label><div class="chips" id="us-pj"><label class="chip"><input type="checkbox" value="*" ${(u.proyectos || []).includes('*') ? 'checked' : ''}> Todos</label>${GHSync.dir.proyectos.map(p => `<label class="chip"><input type="checkbox" value="${esc(p.id)}" ${(u.proyectos || [GHSync.proj]).includes(p.id) ? 'checked' : ''}> ${esc(p.nombre)}</label>`).join('')}</div></div>` : ''}
   <div class="field"><label>Secciones del reporte que llena <span class="hint">Solo aplica a residentes</span></label><div class="chips" id="us-sec">${SECCIONES.map(([k, l]) => `<label class="chip"><input type="checkbox" value="${k}" ${!(u.secciones || []).length || u.secciones.includes(k) ? 'checked' : ''}> ${l}</label>`).join('')}</div></div>
   ${id ? `<label class="check"><input type="checkbox" id="us-baja" ${u.baja ? 'checked' : ''} style="accent-color:var(--red)"><span><b>Dar de baja</b><span>Ya no podrá entrar; sus reportes se conservan.</span></span></label>` : `<p class="hint-line" style="margin:0">Al guardar se genera su token personal; lo verás en la lista de usuarios para compartírselo.</p>`}</div>
   <div class="sheet-foot"><button class="btn" data-action="close">Cancelar</button><button class="btn primary" data-action="user-save" data-id="${id || ''}">Guardar</button></div>`);
@@ -2761,6 +2820,7 @@ async function saveUser(id) {
   const rec = id ? rows.find(r => r.id === id) : { id: uid('u'), createdAt: Date.now() };
   Object.assign(rec, { nombre, puesto: $('#us-p').value.trim(), rol: $('#us-r').value, num: $('#us-num').value.trim(), frentes, secciones: secciones.length === SECCIONES.length ? [] : secciones, baja: id ? $('#us-baja').checked : false });
   if (!rec.token) rec.token = genToken();
+  if (GHSync.dir) { const pj = $$('#us-pj input:checked').map(i => i.value); rec.proyectos = pj.includes('*') ? ['*'] : pj.length ? pj : [GHSync.proj]; }
   if (!id) rows.push(rec);
   const p = Object.assign({}, Store.doc('project') || {}); const nf = frentes.filter(f => !(p.frentes || []).includes(f)); if (nf.length) { p.frentes = [...(p.frentes || []), ...nf]; await Store.setDoc('project', p); }
   const first = !usersOn();
@@ -2807,7 +2867,7 @@ function vEquipos() {
   const parados = act.filter(e => eqUltimo(e).racha >= 3); const trf = scope.filter(e => e.transfer);
   const byResp = {}; scope.forEach(e => { const k = e.respName || 'Sin responsable'; byResp[k] = (byResp[k] || 0) + eqCostoDia(e) * eqDiasEnMes(e, m0); });
   const F = [['activos', `Activos (${act.length})`], ['transfer', `Transferencias (${trf.length})`], ['baja', 'Dados de baja'], ['todos', 'Todos']];
-  return `<div class="v-head"><div><h1>Maquinaria en obra</h1><p>Cada máquina se da de alta una vez y queda activa, cargando su costo al responsable, hasta que se da de baja. Si cambia de frente se transfiere y quien la recibe la acepta.</p></div>${Store.readOnly ? '' : `<button class="btn primary" data-action="eq-new">${ICON.plus} Dar de alta máquina</button>`}</div>
+  return `<div class="v-head"><div><h1>Maquinaria en obra</h1><p>Control de obra da de alta cada máquina una vez, con su fase y responsable; queda activa cargando su costo hasta su baja. El residente solo reporta horómetros, actividad y el vale del día.</p></div>${Store.readOnly || (usersOn() && !isAdmin()) ? '' : `<button class="btn primary" data-action="eq-new">${ICON.plus} Dar de alta máquina</button>`}</div>
   <section class="kpis" style="margin-top:0">
     <div class="kpi"><div class="k-l">Equipos activos</div><div class="k-v num ${all.length ? '' : 'ph-v'}">${act.length}</div><div class="k-s">${act.filter(e => e.prop === 'rentada').length} rentados · ${act.filter(e => e.prop !== 'rentada').length} propios</div></div>
     <div class="kpi"><div class="k-l">Costo del mes</div><div class="k-v num ${all.length ? '' : 'ph-v'}" style="font-size:24px">${fmtM(costo)}</div><div class="k-s">${cap(MES[m0.getMonth()])}, por días activos</div></div>
@@ -2832,14 +2892,14 @@ function openEquipo(id) {
   <div class="row3"><div class="field"><label>Placas</label><input class="input" id="eq-pl" value="${esc(e.placas || '')}"></div><div class="field"><label>No. de serie</label><input class="input" id="eq-se" value="${esc(e.serie || '')}"></div><div class="field"><label>No. económico</label><input class="input" id="eq-ec" value="${esc(e.eco || '')}"></div></div>
   <div class="row3"><div class="field"><label>Operador</label><input class="input" id="eq-op" value="${esc(e.operador || '')}"></div><div class="field"><label>Propiedad</label><select class="input" id="eq-pr"><option value="propia" ${e.prop !== 'rentada' ? 'selected' : ''}>Propia CEMEX</option><option value="rentada" ${e.prop === 'rentada' ? 'selected' : ''}>Rentada</option></select></div><div class="field"><label>Propietario / arrendadora</label><input class="input" id="eq-ow" value="${esc(e.prop === 'rentada' ? e.owner || '' : 'CEMEX')}"></div></div>
   <div class="row3"><div class="field"><label>Renta mensual (rentada)</label><input class="input" type="number" id="eq-re" value="${esc(e.renta || '')}"></div><div class="field"><label>Costo diario interno (propia)</label><input class="input" type="number" id="eq-cd" value="${esc(e.costoDia || '')}"></div><div class="field"><label>Fecha de ingreso a obra</label><input class="input" type="date" id="eq-in" value="${esc(ini)}" ${id ? 'disabled' : ''}></div></div>
-  <div class="row2"><div class="field"><label>Responsable</label>${usersOn() ? `<select class="input" id="eq-rs">${users().filter(u => ['residente', 'super', 'control'].includes(u.rol)).map(u => `<option value="${u.id}" ${(e.resp || me()?.id) === u.id ? 'selected' : ''}>${esc(u.nombre)}</option>`).join('')}</select>` : `<input class="input" id="eq-rs" value="${esc(e.respName || who())}">`}</div><div class="field"><label>Frente</label><input class="input" id="eq-fr" list="dl-fr2" value="${esc(e.frente || '')}"><datalist id="dl-fr2">${((Store.doc('project') || {}).frentes || []).map(f => `<option value="${esc(f)}">`).join('')}</datalist></div></div></div>
+  <div class="row3"><div class="field"><label>Fase</label><select class="input" id="eq-fa"><option value="">–</option>${M.phases().map(p => `<option ${e.fase === p.name ? 'selected' : ''}>${esc(p.name)}</option>`).join('')}</select></div><div class="field"><label>Responsable <span class="hint">Se sugiere el de la fase</span></label>${usersOn() ? `<select class="input" id="eq-rs">${users().filter(u => ['residente', 'super', 'control'].includes(u.rol)).map(u => `<option value="${u.id}" ${(e.resp || me()?.id) === u.id ? 'selected' : ''}>${esc(u.nombre)}</option>`).join('')}</select>` : `<input class="input" id="eq-rs" value="${esc(e.respName || who())}">`}</div><div class="field"><label>Frente</label><input class="input" id="eq-fr" list="dl-fr2" value="${esc(e.frente || '')}"><datalist id="dl-fr2">${((Store.doc('project') || {}).frentes || []).map(f => `<option value="${esc(f)}">`).join('')}</datalist></div></div></div>
   <div class="sheet-foot"><button class="btn" data-action="close">Cancelar</button><button class="btn primary" data-action="eq-save" data-id="${id || ''}">Guardar</button></div>`);
 }
 async function saveEquipo(id) {
   const g = k => $('#' + k).value.trim(); if (!g('eq-t')) { $('#eq-t').focus(); return; }
   const e = id ? clone(Store.get('equipos', id)) : { id: uid('q'), periodos: [{ ini: g('eq-in') || iso(TODAY()), fin: null }], hist: [], createdAt: Date.now() };
   const ru = usersOn() ? users().find(u => u.id === g('eq-rs')) : null;
-  Object.assign(e, { tipo: g('eq-t'), marca: g('eq-ma'), modelo: g('eq-mo'), placas: g('eq-pl'), serie: g('eq-se'), eco: g('eq-ec'), operador: g('eq-op'), prop: g('eq-pr'), owner: g('eq-pr') === 'rentada' ? g('eq-ow') : 'CEMEX', renta: num(g('eq-re')), costoDia: num(g('eq-cd')), resp: ru ? ru.id : '', respName: ru ? ru.nombre : g('eq-rs'), frente: g('eq-fr') });
+  Object.assign(e, { tipo: g('eq-t'), marca: g('eq-ma'), modelo: g('eq-mo'), placas: g('eq-pl'), serie: g('eq-se'), eco: g('eq-ec'), operador: g('eq-op'), prop: g('eq-pr'), owner: g('eq-pr') === 'rentada' ? g('eq-ow') : 'CEMEX', renta: num(g('eq-re')), costoDia: num(g('eq-cd')), resp: ru ? ru.id : '', respName: ru ? ru.nombre : g('eq-rs'), frente: g('eq-fr'), fase: g('eq-fa') });
   e.hist = [...(e.hist || []), { at: Date.now(), by: who(), accion: id ? 'editó datos' : `alta en obra (${e.frente || 'sin frente'})` }];
   await Store.put('equipos', e); await Store.log(id ? 'editó máquina' : 'dio de alta máquina', eqName(e), eqId(e)); closeModal(); toast(id ? 'Máquina actualizada.' : 'Máquina dada de alta; queda activa hasta su baja.');
   if (R) renderComposer();
@@ -2872,8 +2932,9 @@ async function saveTransfer(id) {
 /* ==========================================================================
    v4 · Almacén: vales de entrada y salida, y dónde se aplicó el material
    ========================================================================== */
-function almTabs() { return subtabs('almacen', [['vales', 'Vales y existencias'], ['concreto', 'Concreto: remisiones vs colado']]); }
+function almTabs() { return subtabs('almacen', [['vales', 'Vales y existencias'], ['insumos', 'Conciliación de insumos'], ['concreto', 'Concreto: remisiones vs colado']]); }
 function vAlmacen() {
+  if (S.sub.almacen === 'insumos') return `<div class="v-head"><div><h1>Almacén</h1><p>Cuadre de cada insumo contra el presupuesto y el avance.</p></div></div>${almTabs()}${vConciliacion()}`;
   if (S.sub.almacen === 'concreto') return `<div class="v-head"><div><h1>Almacén</h1><p>Conciliación del concreto recibido contra el colado reportado.</p></div></div>${almTabs()}${vConcreto()}`;
   const V = Store.list('vales').slice().sort((a, b) => String(b.fecha).localeCompare(String(a.fecha)) || (b.createdAt || 0) - (a.createdAt || 0));
   const mine = usersOn() && myRol() === 'residente' ? me()?.id : null; const canIssue = !Store.readOnly && (!usersOn() || ['almacen', 'super', 'control', 'gerente'].includes(myRol()));
@@ -2892,9 +2953,10 @@ function vAlmacen() {
   </tbody></table></div>`;
 }
 function openVale(tipo) {
-  const mats = [...new Set(Store.list('vales').map(v => v.material).filter(Boolean))];
+  const mats = [...new Set([...insumos(), ...Store.list('vales').map(v => v.material)].filter(Boolean))];
   modal(`<div class="sheet-head"><h2>Vale de ${tipo}</h2><button class="x-btn" data-action="close">${ICON.x}</button></div><div class="sheet-body">
   <div class="row3"><div class="field"><label>Fecha</label><input class="input" type="date" id="va-f" value="${iso(TODAY())}"></div><div class="field"><label>Material</label><input class="input" id="va-m" list="dl-vm"><datalist id="dl-vm">${mats.map(m => `<option value="${esc(m)}">`).join('')}</datalist></div><div class="field"><label>Cantidad y unidad</label><div style="display:flex;gap:6px"><input class="input" type="number" id="va-q" step="any"><input class="input" id="va-u" list="dl-un4" style="width:90px"><datalist id="dl-un4">${UNITS.map(u => `<option value="${u}">`).join('')}</datalist></div></div></div>
+  <div class="field"><label>Categoría</label><select class="input" id="va-cat">${CAT_INSUMO.map(c => `<option>${c}</option>`).join('')}</select></div>
   ${tipo === 'entrada' ? `<div class="row2"><div class="field"><label>Proveedor</label><input class="input" id="va-p"></div><div class="field"><label>Remisión / folio</label><input class="input" id="va-r"></div></div>`
     : `<div class="row3"><div class="field"><label>Se entrega a</label>${usersOn() ? `<select class="input" id="va-to">${users().filter(u => ['residente', 'super', 'control'].includes(u.rol)).map(u => `<option value="${u.id}">${esc(u.nombre)}</option>`).join('')}</select>` : `<input class="input" id="va-to">`}</div><div class="field"><label>Frente</label><input class="input" id="va-fr" list="dl-fr4"><datalist id="dl-fr4">${((Store.doc('project') || {}).frentes || []).map(f => `<option value="${esc(f)}">`).join('')}</datalist></div><div class="field"><label>Fase</label><select class="input" id="va-fa"><option value="">–</option>${M.phases().map(p => `<option>${esc(p.name)}</option>`).join('')}</select></div></div>
     <div class="row2"><div class="field"><label>Concepto donde se aplica <span class="hint">Si ya se sabe</span></label><input class="input" id="va-c" list="dl-cv"><datalist id="dl-cv">${M.concepts().slice(0, 800).map(c => `<option value="${esc(c.clave)}">${esc(c.desc.slice(0, 70))}</option>`).join('')}</datalist></div><div class="field"><label>Ubicación / cadenamiento</label><input class="input" id="va-ub"></div></div>`}
@@ -2903,10 +2965,11 @@ function openVale(tipo) {
 }
 async function saveVale(tipo) {
   const g = k => ($('#' + k)?.value || '').trim(); if (!g('va-m') || !num(g('va-q'))) { toast('Material y cantidad son obligatorios.', true); return; }
+  if (tipo === 'salida') { const st0 = Store.list('vales').filter(x => norm(x.material) === norm(g('va-m'))).reduce((a, x) => a + (x.tipo === 'entrada' ? 1 : -1) * num(x.qty), 0); if (num(g('va-q')) > st0 + 1e-9 && !await ask(`No cuadra: de ${g('va-m')} hay ${fmtQ(Math.round(st0 * 100) / 100)} en existencia y la salida es de ${fmtQ(num(g('va-q')))}. ¿Registrarla de todos modos? Quedará marcada para revisión.`, { si: 'Registrar' })) return; }
   const V = Store.list('vales').filter(v => v.tipo === tipo).length; const f = $('#va-file').files[0];
   const files = f ? await uploadAll([{ file: f }]) : [];
   const u = tipo === 'salida' && usersOn() ? users().find(x => x.id === g('va-to')) : null;
-  const v = { id: uid('v'), tipo, folio: (tipo === 'entrada' ? 'VE-' : 'VS-') + String(V + 1).padStart(4, '0'), fecha: g('va-f'), material: g('va-m'), qty: num(g('va-q')), unidad: g('va-u'), proveedor: g('va-p'), remision: g('va-r'), resp: u ? u.id : '', respName: u ? u.nombre : g('va-to'), frente: g('va-fr'), fase: g('va-fa'), clave: g('va-c'), ubicacion: g('va-ub'), files, author: { name: who() }, createdAt: Date.now() };
+  const v = { cat: g('va-cat'), id: uid('v'), tipo, folio: (tipo === 'entrada' ? 'VE-' : 'VS-') + String(V + 1).padStart(4, '0'), fecha: g('va-f'), material: g('va-m'), qty: num(g('va-q')), unidad: g('va-u'), proveedor: g('va-p'), remision: g('va-r'), resp: u ? u.id : '', respName: u ? u.nombre : g('va-to'), frente: g('va-fr'), fase: g('va-fa'), clave: g('va-c'), ubicacion: g('va-ub'), files, author: { name: who() }, createdAt: Date.now() };
   await Store.put('vales', v); await Store.log(`registró vale de ${tipo}`, v.folio, `${v.material} ${v.qty} ${v.unidad}`); closeModal(); toast(`Vale ${v.folio} guardado.`);
 }
 async function aplicarVale(id) {
@@ -2925,12 +2988,12 @@ let MOD = null;
 function vMods() {
   const rows = ((Store.doc('cambios') || {}).rows || []).slice().sort((a, b) => String(b.fecha).localeCompare(String(a.fecha)));
   const p = Store.doc('project') || {}; const cs = M.concepts();
-  const dl = {}; rows.forEach(r => r.lines.forEach(l => dl[l.clave] = (dl[l.clave] || 0) + num(l.delta)));
+  const ap = rows.filter(r => !r.estado || r.estado === 'Aplicada'); const dl = {}; ap.forEach(r => r.lines.forEach(l => dl[l.clave] = (dl[l.clave] || 0) + num(l.delta)));
   const base = c => num(c.cant) - (dl[c.clave] || 0); // cantidad al cargar el catálogo, antes de lo registrado aquí
   const orig = cs.reduce((a, c) => a + num(c.cant0) * num(c.pu), 0);
   const ordAdj = cs.filter(c => c.tipo !== 'Extraordinario').reduce((a, c) => a + (base(c) - num(c.cant0)) * num(c.pu), 0);
   const ext = {}; cs.filter(c => c.tipo === 'Extraordinario' && !(c.mods || []).length).forEach(c => { const k = c.conv || 'Sin grupo'; ext[k] = (ext[k] || 0) + base(c) * num(c.pu); });
-  const sum = t => rows.filter(r => r.tipo === t).reduce((a, r) => a + r.lines.reduce((s, l) => s + num(l.delta) * num(l.pu), 0), 0);
+  const sum = t => ap.filter(r => r.tipo === t).reduce((a, r) => a + r.lines.reduce((s, l) => s + num(l.delta) * num(l.pu), 0), 0);
   const vig = cs.reduce((a, c) => a + num(c.cant) * num(c.pu), 0); const extTot = Object.values(ext).reduce((a, b) => a + b, 0);
   const lbl = k => ({ C1: 'Extraordinarios del convenio 1', C2: 'Extraordinarios del convenio 2', 'S-C': 'Extraordinarios sin convenio todavía' }[k] || `Extraordinarios ${k}`);
   const row = (t, v, s, b) => `<tr${b ? ' style="font-weight:700;background:var(--surface)"' : ''}><td>${t}${s ? `<br><span class="hint-line" style="font-weight:400">${s}</span>` : ''}</td><td class="n" style="${!b && v < 0 ? 'color:var(--red)' : ''}">${b ? '' : v > 0 ? '+' : ''}${fmtM(v)}</td></tr>`;
@@ -2953,7 +3016,7 @@ function vMods() {
       ${ext['S-C'] && difV != null ? `<tr><td colspan="2" class="hint-line">La diferencia del vigente se explica casi completa por los extraordinarios sin convenio (${fmtM(ext['S-C'])}): están en el catálogo pero aún no en un convenio firmado.</td></tr>` : ''}
     </tbody></table></div></div></div>
   <section class="kpis" style="margin-top:0"><div class="kpi"><div class="k-l">Aditivas registradas</div><div class="k-v num good" style="font-size:24px">${fmtM(sum('Aditiva'))}</div><div class="k-s">${rows.filter(r => r.tipo === 'Aditiva').length} en la plataforma</div></div><div class="kpi"><div class="k-l">Deductivas registradas</div><div class="k-v num bad" style="font-size:24px">${fmtM(sum('Deductiva'))}</div><div class="k-s">${rows.filter(r => r.tipo === 'Deductiva').length} en la plataforma</div></div><div class="kpi"><div class="k-l">Extraordinarios registrados</div><div class="k-v num" style="font-size:24px">${fmtM(sum('Extraordinario'))}</div><div class="k-s">${rows.filter(r => r.tipo === 'Extraordinario').length} en la plataforma</div></div><div class="kpi"><div class="k-l">Extraordinarios al cargar</div><div class="k-v num" style="font-size:24px">${fmtM(extTot)}</div><div class="k-s">${Object.keys(ext).length} grupos de convenio</div></div></section>
-  ${rows.length ? rows.map(r => `<article class="rep is-signed"><div class="rep-h"><span class="pill ${r.tipo === 'Deductiva' ? 'bad' : r.tipo === 'Aditiva' ? 'ok' : 'warn'}">${esc(r.tipo)}</span><b>${esc(r.ref)}</b><span class="who">${fDMY(pd(r.fecha))} · registró ${esc(r.author?.name || '')}</span><span style="margin-left:auto"><b>${fmtM(r.lines.reduce((s, l) => s + num(l.delta) * num(l.pu), 0))}</b></span></div>${r.desc ? `<p class="e-text">${esc(r.desc)}</p>` : ''}
+  ${rows.length ? rows.map(r => `<article class="rep is-signed"><div class="rep-h"><span class="pill ${r.tipo === 'Deductiva' ? 'bad' : r.tipo === 'Aditiva' ? 'ok' : 'warn'}">${esc(r.tipo)}</span><b>${esc(r.ref)}</b>${r.estado && r.estado !== 'Aplicada' ? `<span class="pill ${r.estado === 'Rechazada' ? 'bad' : 'warn'}">${esc(r.estado)}${modNext(r) ? ' · ' + esc(ROL[modNext(r)]?.label) : ''}</span>` : ''}<span class="who">${fDMY(pd(r.fecha))} · registró ${esc(r.author?.name || '')}</span><span style="margin-left:auto"><b>${fmtM(r.lines.reduce((s, l) => s + num(l.delta) * num(l.pu), 0))}</b></span></div>${r.desc ? `<p class="e-text">${esc(r.desc)}</p>` : ''}${modNext(r) && !Store.readOnly && (!usersOn() || myRol() === modNext(r)) ? `<div style="display:flex;gap:8px;margin:8px 0"><button class="btn sm primary" data-action="mod-ok" data-id="${r.id}">Validar como ${esc(ROL[modNext(r)]?.label)}</button><button class="btn sm ghost danger" data-action="mod-no" data-id="${r.id}">Rechazar</button></div>` : ''}
     <div class="tbl-wrap" style="margin-top:8px"><table class="tbl"><thead><tr><th>Clave</th><th>Concepto</th><th class="n">Antes</th><th class="n">Cambio</th><th class="n">Después</th><th class="n">Importe</th></tr></thead><tbody>${r.lines.map(l => `<tr><td><b>${esc(l.clave)}</b>${l.nuevo ? ' <span class="pill warn">nuevo</span>' : ''}</td><td>${esc((l.desc || M.cmap().get(l.clave)?.desc || '').slice(0, 80))}</td><td class="n">${fmtQ(l.antes)}</td><td class="n" style="color:${l.delta < 0 ? 'var(--red)' : 'var(--ok)'}">${l.delta > 0 ? '+' : ''}${fmtQ(l.delta)} ${esc(l.unidad || '')}</td><td class="n">${fmtQ(l.despues)}</td><td class="n">${fmtM(num(l.delta) * num(l.pu))}</td></tr>`).join('')}</tbody></table></div>
     <div class="thumbs">${(r.files || []).map(f => `<a class="btn sm" href="${esc(Store.fileUrl(f))}" target="_blank" rel="noopener">📄 ${esc(f.name)}</a>`).join('')}</div></article>`).join('')
     : `<div class="ghost-note"><span><b>Aquí se registran las aditivas, deductivas y extraordinarios</b> que se autorizan durante la obra. Se aplican sobre el catálogo vigente sin volver a cargarlo, y cada una exige el archivo con firmas y autorizaciones.</span></div>`}`;
@@ -2990,8 +3053,10 @@ async function saveMod() {
   if (!await ask(`Se aplicarán ${out.length} cambios al catálogo por ${fmtM(out.reduce((s, l) => s + l.delta * l.pu, 0))}. ¿Continuar?`, { si: 'Aplicar' })) return;
   const files = await uploadAll([{ file: f }]);
   const rows = [...(((Store.doc('cambios') || {}).rows) || []), { id: uid('mc'), tipo: MOD.tipo, ref: MOD.ref.trim(), fecha: MOD.fecha, desc: MOD.desc.trim(), lines: out, files, author: { name: who() }, createdAt: Date.now() }];
-  await Store.setArr('catalog', cat); await Store.setDoc('cambios', { rows }); await Store.log(`registró ${MOD.tipo.toLowerCase()}`, MOD.ref, `${out.length} conceptos`);
-  MOD = null; closeModal(); toast('Modificación aplicada al catálogo.'); S.sub.programa = 'mods'; render();
+  const porVal = flujoMods().length > 0; rows[rows.length - 1].estado = porVal ? 'Por validar' : 'Aplicada'; rows[rows.length - 1].aprob = [];
+  if (porVal) rows[rows.length - 1].lines = out.map(l => Object.assign({}, l, { antes: null, despues: null }));
+  if (!porVal) await Store.setArr('catalog', cat); await Store.setDoc('cambios', { rows }); await Store.log(`registró ${MOD.tipo.toLowerCase()}`, MOD.ref, `${out.length} conceptos${porVal ? ', por validar' : ''}`);
+  MOD = null; closeModal(); toast(porVal ? 'Registrada; se aplica al catálogo cuando termine su validación.' : 'Modificación aplicada al catálogo.'); S.sub.programa = 'mods'; render();
 }
 async function modLinesFromExcel(file) {
   const { rows } = await parseSheet(file, ['clave', 'desc', 'unidad', 'cant', 'pu', 'partida', 'cc']);
@@ -3022,7 +3087,7 @@ function vSeguimiento() {
   </tbody></table></div>`;
 }
 function reminderHTML() {
-  if (!usersOn() || myRol() !== 'residente' || !isWorkday(TODAY())) return '';
+  if (S.view === 'midia' || !usersOn() || myRol() !== 'residente' || !isWorkday(TODAY())) return '';
   const u = me(); const hoy = iso(TODAY()); if (repBy(u).some(r => r.date === hoy)) return '';
   const [h, m] = String((Store.doc('project') || {}).horaRecordatorio || '17:00').split(':').map(Number); const now = new Date();
   if (now.getHours() * 60 + now.getMinutes() < h * 60 + m) return '';
@@ -3035,12 +3100,14 @@ function inbox() {
   Store.list('equipos').forEach(e => { if (e.transfer && (!usersOn() || e.transfer.to === u?.id)) out.push({ t: `Transferencia de ${eqName(e)}`, s: `Te la envía ${e.transfer.by}${e.transfer.nota ? ' · ' + e.transfer.nota : ''}`, a: 'go', v: 'equipos' }); });
   Store.list('obs').forEach(o => { if (o.estatus === 'Abierta' && u && o.responsable === u.nombre) out.push({ t: `Corregir ${o.folio}: ${o.titulo}`, s: `${o.tipo} · compromiso ${o.compromiso ? fShort(pd(o.compromiso)) : ''}`, a: 'go', v: 'calidad' }); if (o.estatus === 'Por verificar' && (isAdmin() || r === 'super')) out.push({ t: `Verificar ${o.folio}: ${o.titulo}`, s: o.tipo, a: 'go', v: 'calidad' }); });
   Store.list('vales').forEach(v => { if (v.tipo === 'salida' && !v.aplicado && !v.clave && u && v.resp === u.id) out.push({ t: `Registrar dónde se aplicó ${v.material}`, s: `${v.folio} · ${fmtQ(v.qty)} ${v.unidad || ''}`, a: 'go', v: 'almacen' }); });
+  (((Store.doc('cambios') || {}).rows) || []).forEach(m => { const n = modNext(m); if (n && (r === n || !usersOn())) out.push({ t: `Validar ${m.tipo.toLowerCase()}: ${m.ref}`, s: fmtM(m.lines.reduce((a, l) => a + num(l.delta) * num(l.pu), 0)), a: 'sub', v: 'programa', k: 'mods' }); });
+  if (isAdmin()) { const nf = Store.list('feedback').filter(x => x.estatus === 'Nueva').length; if (nf) out.push({ t: `${nf} fallas o sugerencias nuevas del piloto`, s: 'Configuración › Fallas y sugerencias', a: 'sub', v: 'config', k: 'feedback' }); }
   M.reports().forEach(x => { if (!x.firma && (u ? x.author?.uid === u.id : false)) out.push({ t: `Firmar ${M.folios().get(x.id)}`, s: `${fShort(pd(x.date))} · ${x.frente}`, a: 'open-report', id: x.id }); });
   return out;
 }
 function openInbox() {
   const it = inbox();
-  modal(`<div class="sheet-head"><h2>Mi bandeja</h2><button class="x-btn" data-action="close">${ICON.x}</button></div><div class="sheet-body">${it.length ? it.map(x => `<button class="res" data-action="${x.a}" data-v="${x.v || ''}" data-id="${x.id || ''}"><div class="r-t"><b>${esc(x.t)}</b></div><div class="hint-line">${esc(x.s)}</div></button>`).join('') : '<p class="hint-line" style="margin:0">No tienes pendientes por atender.</p>'}<p class="hint-line" style="margin:0">Los avisos aparecen aquí al entrar a la plataforma. Para correo o Teams hace falta conectar un flujo de Power Automate.</p></div>`);
+  modal(`<div class="sheet-head"><h2>Mi bandeja</h2><button class="x-btn" data-action="close">${ICON.x}</button></div><div class="sheet-body">${it.length ? it.map(x => `<button class="res" data-action="${x.a}" data-v="${x.v || ''}" data-k="${x.k || ''}" data-id="${x.id || ''}"><div class="r-t"><b>${esc(x.t)}</b></div><div class="hint-line">${esc(x.s)}</div></button>`).join('') : '<p class="hint-line" style="margin:0">No tienes pendientes por atender.</p>'}<p class="hint-line" style="margin:0">Los avisos aparecen aquí al entrar a la plataforma. Para correo o Teams hace falta conectar un flujo de Power Automate.</p></div>`);
 }
 
 /* ---------- Validación de pendientes: quién registra, quién instruyó y cadena de aprobación ---------- */
@@ -3174,9 +3241,9 @@ let INS = null;
 function nextFolio(c, pre) { return pre + String((Store.c[c] || []).length + 1).padStart(3, '0'); }
 function vCalidad() {
   const sub = S.sub.calidad;
-  return `<div class="v-head"><div><h1>Calidad y seguridad</h1><p>Inspecciones con lista de verificación: cada punto que falla abre una observación con responsable y fecha, y se cierra con evidencia. Incluye el control de laboratorio del concreto.</p></div>
-    ${Store.readOnly ? '' : `<div style="display:flex;gap:8px;flex-wrap:wrap">${sub === 'lab' ? `<button class="btn primary" data-action="lab-new">${ICON.plus} Muestra de concreto</button>` : `<button class="btn" data-action="obs-new">${ICON.plus} Observación</button><button class="btn primary" data-action="insp-new">${ICON.plus} Inspección</button>`}</div>`}</div>
-  ${subtabs('calidad', [['obs', 'Observaciones'], ['insp', 'Inspecciones'], ['lab', 'Laboratorio de concreto']])}
+  return `<div class="v-head"><div><h1>Calidad y seguridad</h1><p>Cuando algo sale mal (una losa regresada por segregación, un incidente de seguridad) se levanta una incidencia: qué pasó, dónde, la causa, qué retrabajo implica y cuánto cuesta. Las listas de verificación sirven para investigar, no se llenan en cada trabajo.</p></div>
+    ${Store.readOnly ? '' : `<div style="display:flex;gap:8px;flex-wrap:wrap">${sub === 'lab' ? `<button class="btn primary" data-action="lab-new">${ICON.plus} Muestra de concreto</button>` : `<button class="btn" data-action="insp-new">${ICON.plus} Lista de verificación</button><button class="btn primary" data-action="obs-new">${ICON.plus} Levantar incidencia</button>`}</div>`}</div>
+  ${subtabs('calidad', [['obs', 'Incidencias'], ['insp', 'Listas de verificación'], ['lab', 'Laboratorio de concreto']])}
   ${sub === 'insp' ? vInsp() : sub === 'lab' ? vLab() : vObs()}`;
 }
 function obsLate(o) { return o.estatus !== 'Cerrada' && o.compromiso && o.compromiso < iso(TODAY()); }
@@ -3188,16 +3255,16 @@ function vObs() {
   const dias = all.filter(o => o.estatus === 'Cerrada' && o.cerradaAt).map(o => daysBetween(pd(o.alta), new Date(o.cerradaAt)));
   const F = [['abiertas', `Abiertas (${ab.length})`], ['vencidas', `Vencidas (${all.filter(obsLate).length})`], ['verificar', `Por verificar (${all.filter(o => o.estatus === 'Por verificar').length})`], ['cerradas', 'Cerradas'], ['todas', 'Todas']];
   return `<section class="kpis" style="margin-top:0">
-    <div class="kpi"><div class="k-l">Observaciones abiertas</div><div class="k-v num ${all.length ? '' : 'ph-v'}">${ab.length}</div><div class="k-s">${ab.filter(o => o.tipo === 'Seguridad').length} de seguridad · ${ab.filter(o => o.tipo === 'Calidad').length} de calidad</div></div>
+    <div class="kpi"><div class="k-l">Incidencias abiertas</div><div class="k-v num ${all.length ? '' : 'ph-v'}">${ab.length}</div><div class="k-s">${ab.filter(o => o.tipo === 'Seguridad').length} de seguridad · ${ab.filter(o => o.tipo === 'Calidad').length} de calidad</div></div>
     <div class="kpi ${all.filter(obsLate).length ? 'alert' : ''}"><div class="k-l">Vencidas</div><div class="k-v num ${all.length ? '' : 'ph-v'}">${all.filter(obsLate).length}</div><div class="k-s">pasada su fecha compromiso</div></div>
     <div class="kpi"><div class="k-l">Severidad alta abiertas</div><div class="k-v num ${all.length ? '' : 'ph-v'}">${ab.filter(o => o.sev === 'Alta').length}</div><div class="k-s">atender primero</div></div>
     <div class="kpi"><div class="k-l">Tiempo de cierre</div><div class="k-v num ${dias.length ? '' : 'ph-v'}">${dias.length ? fmtN(dias.reduce((a, b) => a + b, 0) / dias.length, 1) : '–'}<small>días</small></div><div class="k-s">promedio de las cerradas</div></div>
-    <div class="kpi"><div class="k-l">Inspecciones del mes</div><div class="k-v num ${ins.length ? '' : 'ph-v'}">${ins.filter(i => String(i.fecha).startsWith(iso(TODAY()).slice(0, 7))).length}</div><div class="k-s">${ins.length ? fmtP(ins.filter(i => i.resultado === 'Aprobada').length / ins.length) + ' aprobadas a la primera' : 'sin inspecciones'}</div></div>
+    <div class="kpi"><div class="k-l">Costo de retrabajo</div><div class="k-v num ${all.length ? '' : 'ph-v'}" style="font-size:24px">${fmtM(all.reduce((a, o) => a + num(o.costo), 0))}</div><div class="k-s">${(() => { const c = {}; all.forEach(o => { if (o.causa) c[o.causa] = (c[o.causa] || 0) + 1; }); const t = Object.entries(c).sort((a, b) => b[1] - a[1])[0]; return t ? 'Causa más frecuente: ' + esc(t[0]) : 'estimado en las incidencias'; })()}</div></div>
   </section>
   <div class="tb-row" style="margin-bottom:12px"><div class="seg">${F.map(([k, l]) => `<button data-action="obsf" data-k="${k}" aria-pressed="${S.obsF === k}">${l}</button>`).join('')}</div><select class="input" style="width:auto" data-input="obst"><option value="">Calidad y seguridad</option><option ${S.obsT === 'Calidad' ? 'selected' : ''}>Calidad</option><option ${S.obsT === 'Seguridad' ? 'selected' : ''}>Seguridad</option></select></div>
-  ${!all.length ? `<div class="ghost-note"><span><b>Así se verán las observaciones.</b> Salen solas de los puntos que fallan en una inspección, o se registran a mano. Cada una tiene responsable, fecha compromiso, evidencia de corrección y verificación.</span></div>${ghostList(3)}` :
+  ${!all.length ? `<div class="ghost-note"><span><b>Así se verán las incidencias.</b> Cada una con qué pasó, dónde, la causa, el retrabajo y su costo, el responsable y la verificación del cierre.</span></div>${ghostList(3)}` :
     list.length ? list.map(o => `<article class="rep ${o.estatus === 'Cerrada' ? 'is-signed' : obsLate(o) ? '' : 'is-draft'}" style="${obsLate(o) ? 'border-left:4px solid var(--red)' : ''}"><div class="rep-h"><span class="folio">${esc(o.folio)}</span><span class="pill ${o.tipo === 'Seguridad' ? 'bad' : 'blue'}">${esc(o.tipo)}</span><b>${esc(o.titulo)}</b>${o.sev ? `<span class="pill ${o.sev === 'Alta' ? 'bad' : o.sev === 'Media' ? 'warn' : 'mut'}">Severidad ${esc(o.sev)}</span>` : ''}<span style="margin-left:auto" class="pill ${o.estatus === 'Cerrada' ? 'ok' : obsLate(o) ? 'bad' : o.estatus === 'Por verificar' ? 'warn' : 'mut'}">${obsLate(o) ? 'Vencida' : esc(o.estatus)}</span></div>
-      <div class="rep-stats">${o.responsable ? `<span class="metric">👤 <b>${esc(o.responsable)}</b></span>` : ''}<span class="metric">Alta ${fShort(pd(o.alta))}</span>${o.compromiso ? `<span class="metric">Compromiso <b>${fShort(pd(o.compromiso))}</b></span>` : ''}${o.frente ? `<span class="metric">${esc(o.frente)}</span>` : ''}${o.insp ? `<span class="metric">De ${esc((Store.get('insp', o.insp) || {}).folio || 'inspección')}</span>` : ''}</div>
+      <div class="rep-stats">${o.responsable ? `<span class="metric">👤 <b>${esc(o.responsable)}</b></span>` : ''}<span class="metric">Alta ${fShort(pd(o.alta))}</span>${o.compromiso ? `<span class="metric">Compromiso <b>${fShort(pd(o.compromiso))}</b></span>` : ''}${o.frente ? `<span class="metric">${esc(o.frente)}</span>` : ''}${o.insp ? `<span class="metric">De ${esc((Store.get('insp', o.insp) || {}).folio || 'inspección')}</span>` : ''}${o.detecto ? `<span class="metric">Detectó: ${esc(o.detecto)}</span>` : ''}${o.clave ? `<span class="metric">${esc(o.clave)}${o.cantAf ? ' · ' + fmtQ(o.cantAf) + ' ' + esc(o.unidadAf || '') : ''}</span>` : ''}${o.accion ? `<span class="metric">Acción: <b>${esc(o.accion)}</b></span>` : ''}${num(o.costo) ? `<span class="metric">💲 <b>${fmtM(o.costo)}</b></span>` : ''}${o.causa ? `<span class="metric">Causa: ${esc(o.causa)}</span>` : ''}</div>
       ${o.texto ? `<p class="e-text">${esc(o.texto)}</p>` : ''}${(o.files || []).length ? `<div class="thumbs">${o.files.map(f => `<a href="${esc(Store.fileUrl(f))}" target="_blank" rel="noopener">${(f.kind || '').startsWith('image') ? `<img src="${esc(Store.fileUrl(f))}" alt="" style="width:96px;height:72px;object-fit:cover;border-radius:7px">` : '📄 ' + esc(f.name)}</a>`).join('')}</div>` : ''}
       ${(o.seg || []).length ? `<div class="hist">${o.seg.map(x => `<span>${fStamp(x.at)} · ${esc(x.by)}: ${esc(x.texto)}</span>`).join('')}</div>` : ''}
       ${Store.readOnly ? '' : `<div class="e-foot"><span class="author"></span>${o.estatus === 'Abierta' ? `<button class="btn sm primary" data-action="obs-fix" data-id="${o.id}">Registrar corrección</button>` : ''}${o.estatus === 'Por verificar' && (!usersOn() || isAdmin() || myRol() === 'super') ? `<button class="btn sm primary" data-action="obs-ok" data-id="${o.id}">Verificar y cerrar</button><button class="btn sm ghost" data-action="obs-reopen" data-id="${o.id}">Regresar</button>` : ''}</div>`}</article>`).join('')
@@ -3241,19 +3308,21 @@ function inspDetail(id) {
 }
 function openObs() {
   const fr = (myFrentes() || [])[0] || '';
-  modal(`<div class="sheet-head"><h2>Nueva observación</h2><button class="x-btn" data-action="close">${ICON.x}</button></div><div class="sheet-body">
-  <div class="field"><label>Qué se observó</label><input class="input" id="ob-t" placeholder="Ej. Excavación sin barandal en eje 7"></div>
-  <div class="row3"><div class="field"><label>Tipo</label><select class="input" id="ob-ti"><option>Seguridad</option><option>Calidad</option></select></div><div class="field"><label>Severidad</label><select class="input" id="ob-s"><option>Alta</option><option selected>Media</option><option>Baja</option></select></div><div class="field"><label>Fecha compromiso</label><input class="input" type="date" id="ob-c" value="${iso(addDays(TODAY(), 3))}"></div></div>
-  <div class="row2"><div class="field"><label>Responsable</label><input class="input" id="ob-r" list="dl-obr"><datalist id="dl-obr">${users().map(u => `<option value="${esc(u.nombre)}">`).join('')}</datalist></div><div class="field"><label>Frente</label><input class="input" id="ob-f" value="${esc(fr)}"></div></div>
-  <div class="field"><label>Detalle y acción requerida</label><textarea class="input" id="ob-d" style="min-height:70px"></textarea></div>
-  <div class="field"><label>Foto</label><input type="file" id="ob-files" multiple accept="image/*"></div></div>
-  <div class="sheet-foot"><button class="btn" data-action="close">Cancelar</button><button class="btn primary" data-action="obs-save">Guardar</button></div>`);
+  modal(`<div class="sheet-head"><h2>Levantar incidencia</h2><button class="x-btn" data-action="close">${ICON.x}</button></div><div class="sheet-body">
+  <div class="field"><label>Qué pasó</label><input class="input" id="ob-t" placeholder="Ej. Losa regresada por segregación en eje 7"></div>
+  <div class="row3"><div class="field"><label>Tipo</label><select class="input" id="ob-ti"><option>Calidad</option><option>Seguridad</option></select></div><div class="field"><label>Quién lo detectó</label><select class="input" id="ob-de">${['Supervisión', 'Cliente', 'Interno', 'Laboratorio', 'Seguridad'].map(x => `<option>${x}</option>`).join('')}</select></div><div class="field"><label>Severidad</label><select class="input" id="ob-s"><option>Alta</option><option selected>Media</option><option>Baja</option></select></div></div>
+  <div class="row3"><div class="field"><label>Concepto</label><input class="input" id="ob-c" list="dl-obc"><datalist id="dl-obc">${M.concepts().slice(0, 800).map(c => `<option value="${esc(c.clave)}">${esc(c.desc.slice(0, 60))}</option>`).join('')}</datalist></div><div class="field"><label>Cantidad afectada</label><div style="display:flex;gap:6px"><input class="input" type="number" step="any" id="ob-q"><input class="input" id="ob-u" style="width:80px" placeholder="m3"></div></div><div class="field"><label>Frente / ubicación</label><input class="input" id="ob-f" value="${esc(fr)}"></div></div>
+  <div class="row3"><div class="field"><label>Acción requerida</label><select class="input" id="ob-a">${['Reparar', 'Demoler y reponer', 'Aceptar con concesión', 'Corregir procedimiento', 'Por definir'].map(x => `<option>${x}</option>`).join('')}</select></div><div class="field"><label>Costo estimado del retrabajo (MXN)</label><input class="input" type="number" id="ob-costo"></div><div class="field"><label>Causa raíz</label><select class="input" id="ob-ca">${['Por definir', 'Material', 'Mano de obra', 'Procedimiento', 'Equipo', 'Diseño o información', 'Clima', 'Proveedor', 'Subcontratista'].map(x => `<option>${x}</option>`).join('')}</select></div></div>
+  <div class="row2"><div class="field"><label>Responsable de corregir</label><select class="input" id="ob-r"><option value="">–</option>${personas().map(n => `<option>${esc(n)}</option>`).join('')}</select></div><div class="field"><label>Fecha compromiso</label><input class="input" type="date" id="ob-co" value="${iso(addDays(TODAY(), 3))}"></div></div>
+  <div class="field"><label>Detalle e investigación</label><textarea class="input" id="ob-d" style="min-height:80px" placeholder="Qué se encontró, qué se revisó (cimbra, acero, revenimiento…), qué se decidió"></textarea></div>
+  <div class="field"><label>Fotos y documentos</label><input type="file" id="ob-files" multiple accept="image/*,application/pdf"></div></div>
+  <div class="sheet-foot"><button class="btn" data-action="close">Cancelar</button><button class="btn primary" data-action="obs-save">Guardar incidencia</button></div>`, true);
 }
 async function saveObs() {
-  const g = k => $('#' + k).value.trim(); if (!g('ob-t')) { $('#ob-t').focus(); return; }
+  const g = k => ($('#' + k)?.value || '').trim(); if (!g('ob-t')) { $('#ob-t').focus(); return; }
   const files = await uploadAll(Array.from($('#ob-files').files || []).map(f => ({ file: f }))); const s = Session.get() || { name: 'Sin identificar' };
-  await Store.put('obs', { id: uid('o'), folio: nextFolio('obs', 'OB-'), tipo: g('ob-ti'), titulo: g('ob-t'), texto: g('ob-d'), sev: g('ob-s'), frente: g('ob-f'), responsable: g('ob-r'), alta: iso(TODAY()), compromiso: g('ob-c'), estatus: 'Abierta', files, seg: [{ at: Date.now(), by: s.name, texto: 'Registró la observación' }], createdAt: Date.now() });
-  closeModal(); toast('Observación registrada.');
+  await Store.put('obs', { id: uid('o'), folio: nextFolio('obs', 'IC-'), tipo: g('ob-ti'), titulo: g('ob-t'), texto: g('ob-d'), detecto: g('ob-de'), sev: g('ob-s'), clave: g('ob-c'), cantAf: num(g('ob-q')), unidadAf: g('ob-u'), accion: g('ob-a'), costo: num(g('ob-costo')), causa: g('ob-ca'), frente: g('ob-f'), responsable: g('ob-r'), alta: iso(TODAY()), compromiso: g('ob-co'), estatus: 'Abierta', files, seg: [{ at: Date.now(), by: s.name, texto: 'Levantó la incidencia' }], createdAt: Date.now() });
+  await Store.log('levantó incidencia', g('ob-t'), g('ob-ti')); closeModal(); toast('Incidencia registrada; le aparece al responsable en su bandeja.');
 }
 async function obsAction(kind, id) {
   const o = clone(Store.get('obs', id)); const s = Session.get() || { name: 'Sin identificar' };
@@ -3338,7 +3407,7 @@ function openComp() {
   modal(`<div class="sheet-head"><h2>Nuevo compromiso</h2><button class="x-btn" data-action="close">${ICON.x}</button></div><div class="sheet-body">
   <div class="field"><label>Concepto (vacío para una tarea sin cantidad)</label><input class="input" list="dl-pc" id="pc-c"><datalist id="dl-pc">${[...new Set(act.map(l => l.clave))].map(k => `<option value="${esc(k)}">${esc((M.cmap().get(k) || {}).desc?.slice(0, 70) || '')}</option>`).join('')}</datalist></div>
   <div class="field"><label>Descripción (si no es concepto)</label><input class="input" id="pc-d"></div>
-  <div class="row3"><div class="field"><label>Cantidad comprometida</label><input class="input" type="number" step="any" id="pc-q"></div><div class="field"><label>Fase</label><select class="input" id="pc-f"><option value="">–</option>${M.phases().map(p => `<option>${esc(p.name)}</option>`).join('')}</select></div><div class="field"><label>Responsable</label><input class="input" id="pc-r" list="dl-pcr" value="${esc(me()?.nombre || '')}"><datalist id="dl-pcr">${users().map(u => `<option value="${esc(u.nombre)}">`).join('')}</datalist></div></div></div>
+  <div class="row3"><div class="field"><label>Cantidad comprometida</label><input class="input" type="number" step="any" id="pc-q"></div><div class="field"><label>Fase</label><select class="input" id="pc-f" data-faseresp="pc-r"><option value="">–</option>${M.phases().map(p => `<option>${esc(p.name)}</option>`).join('')}</select></div><div class="field"><label>Responsable <span class="hint">Se sugiere el de la fase</span></label><select class="input" id="pc-r"><option value="">–</option>${personas().map(n => `<option ${norm(n) === norm(me()?.nombre || '') ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select></div></div></div>
   <div class="sheet-foot"><button class="btn" data-action="close">Cancelar</button><button class="btn primary" data-action="plan-save">Agregar</button></div>`);
 }
 async function saveComp() {
@@ -3351,7 +3420,7 @@ async function sugerirPlan() {
   const rows = M.program().filter(l => !(l._fin < m || l._ini > b)).map(l => { const s = l._ini > m ? l._ini : m, e = l._fin < b ? l._fin : b; const q = num(l.cant) * workdays(s, e) / (workdays(l._ini, l._fin) || 1); return { l, q, v: q * (M.pu(l.clave) || 1) }; }).filter(x => x.q > 0 && !have.has(x.l.clave + '|' + x.l.fase)).sort((a, b) => b.v - a.v).slice(0, 15);
   if (!rows.length) { toast('No hay más conceptos programados esta semana.'); return; }
   if (!await ask(`Se agregarán ${rows.length} compromisos con la cantidad que marca el programa para esta semana (los de mayor importe). Después puedes ajustarlos o quitarlos.`, { si: 'Agregar' })) return;
-  rows.forEach(x => d.comp.push({ id: uid('c'), clave: x.l.clave, cant: Math.round(x.q * 100) / 100, fase: x.l.fase, resp: '', frente: '', hecho: null, causa: '' }));
+  rows.forEach(x => d.comp.push({ id: uid('c'), clave: x.l.clave, cant: Math.round(x.q * 100) / 100, fase: x.l.fase, resp: faseResp(x.l.fase), frente: '', hecho: null, causa: '' }));
   await savePlan(d); toast(`${rows.length} compromisos agregados.`);
 }
 
@@ -3365,7 +3434,7 @@ function cfgFlujos() {
   <div class="card" style="max-width:760px"><h3>Pendientes y acuerdos</h3><div class="sub">Pasos en orden. Monto mínimo 0 = siempre.</div>
   <div class="rows" id="fl-rows">${st.map((s, i) => `<div class="rowc"><div class="fgrid" style="grid-template-columns:40px 2fr 1.5fr"><b style="align-self:center">${i + 1}.</b><div><span class="mini-l">Valida</span><select class="input sm" data-fl="rol">${Object.entries(ROL).filter(([k]) => k !== 'consulta').map(([k, r]) => `<option value="${k}" ${s.rol === k ? 'selected' : ''}>${r.label}</option>`).join('')}</select></div><div><span class="mini-l">Solo si el impacto es mayor a (MXN)</span><input class="input sm" type="number" data-fl="min" value="${num(s.min) || 0}"></div></div><button class="rm-row" data-action="fl-del" data-i="${i}">×</button></div>`).join('')}</div>
   ${Store.readOnly || !isAdmin() ? '' : `<div style="display:flex;gap:8px;margin-top:10px"><button class="btn sm" data-action="fl-add">${ICON.plus} Paso</button><button class="btn sm primary" data-action="fl-save">Guardar flujo</button></div>`}
-  <p class="hint-line" style="margin-top:10px">Ejemplo: Superintendente (siempre) › Gerente de proyecto (siempre) › Control de obra (solo si es mayor a $1,000,000).</p></div>`;
+  <p class="hint-line" style="margin-top:10px">Ejemplo: Superintendente (siempre) › Gerente de proyecto (siempre) › Control de obra (solo si es mayor a $1,000,000).</p></div>${cfgFlujosMods()}`;
 }
 function readFlujo() { return $$('#fl-rows .rowc').map(r => ({ rol: $('[data-fl="rol"]', r).value, min: num($('[data-fl="min"]', r).value) })); }
 
@@ -3497,6 +3566,223 @@ function drawExtra() {
   CHARTS.push(new Chart(el, { data: { labels: hist.map(h => 'S' + isoWeek(h.m).w), datasets: [{ type: 'bar', label: 'PPC', data: hist.map(h => h.ppc == null ? null : h.ppc * 100), backgroundColor: hist.map(h => h.ppc == null ? 'transparent' : h.ppc >= .8 ? cssVar('--ok') : h.ppc >= .6 ? cssVar('--amber') : cssVar('--red')), borderRadius: 3 }, { type: 'line', label: 'Meta 80%', data: hist.map(() => 80), borderColor: cssVar('--muted'), borderDash: [4, 4], pointRadius: 0 }] }, options: Object.assign(chartBase(), { scales: { x: { grid: { display: false } }, y: { min: 0, max: 100, ticks: { callback: v => v + '%' }, grid: { color: cssVar('--line') } } }, plugins: { legend: { display: false } } }) }));
 }
 
+
+/* ==========================================================================
+   v6 · Varios proyectos: directorio, cambio de proyecto y portafolio
+   ========================================================================== */
+function curProj() { return GHSync.dir ? GHSync.proj : null; }
+function allUsers() { return (GHSync.dir ? GHSync.dir.usuarios : ((Store._doc('users') || {}).rows || [])).filter(u => !u.baja); }
+function inProj(u) { if (!GHSync.dir) return true; const p = u.proyectos || []; return !p.length || p.includes('*') || p.includes(GHSync.proj); }
+function myProjects() { if (!GHSync.dir) return []; const u = me(); const ps = GHSync.dir.proyectos || []; if (!u) return ps; const p = u.proyectos || []; return !p.length || p.includes('*') ? ps : ps.filter(x => p.includes(x.id)); }
+async function switchProject(id, silent) {
+  const p = (GHSync.dir?.proyectos || []).find(x => x.id === id); if (!p || p.id === GHSync.proj) return;
+  if (GHSync.pending()) { toast('Guardando tus cambios antes de cambiar de proyecto…'); await GHSync.flush(); }
+  $('#main').innerHTML = `<div class="loader"><div class="spin"></div>Abriendo ${esc(p.nombre)}…</div>`;
+  GHSync.proj = p.id; GHSync.folder = p.carpeta; GHSync.dirty = { ops: {}, d: new Set(), arr: new Set() }; GHSync.sha = { base: null, ops: null };
+  try { localStorage.setItem('bitacora.proj', p.id); } catch (e) { }
+  try { await GHSync.pull(false); } catch (e) { toast('No se pudo abrir el proyecto: ' + e.message, true); }
+  Store._ver++; M._k = null; closeModalSoft(); S.view = homeView(); if (!silent) toast(`Estás en ${p.nombre}.`); render(); window.scrollTo({ top: 0 });
+}
+function resumenProyecto() {
+  const st = M.status(); const x = pronoNow(); const hoy = TODAY(); const reps = M.reports(); const last = reps.slice(-1)[0];
+  const habiles = Array.from({ length: 10 }, (_, i) => addDays(hoy, -i)).filter(isWorkday).slice(0, 6); const conRep = habiles.filter(d => reps.some(r => r.date === iso(d))).length;
+  return { at: Date.now(), avance: st ? st.evP : null, prog: st?.pvP ?? null, spi: st?.spi ?? null, cpi: st?.cpi ?? null, prono: x.plan ? x.ejec / x.plan : null, pronoEsp: x.P.elapsed / x.P.N, alertas: M.alerts().length, pendVenc: M.pendLate().length, incid: Store.list('obs').filter(o => o.estatus !== 'Cerrada').length, ultimo: last?.date || null, captura: habiles.length ? conRep / habiles.length : null, ebitda: (() => { const f = M.finance().filter(r => M.costOf(r) > 0); const i = f.reduce((a, r) => a + num(r.ing), 0); return i ? f.reduce((a, r) => a + num(r.ing) - M.costOf(r), 0) / i : null; })(), nombre: (Store.doc('project') || {}).name || '' };
+}
+function semaforo(r) { if (!r) return ['mut', 'Sin datos']; if (r.avance == null && !r.ultimo) return ['mut', 'Por arrancar']; if ((r.spi != null && r.spi < .9) || r.pendVenc > 2 || (r.captura != null && r.captura < .5)) return ['bad', 'Atender']; if ((r.spi != null && r.spi < .97) || r.alertas || r.pendVenc || (r.captura != null && r.captura < .85)) return ['warn', 'Vigilar']; return ['ok', 'En control']; }
+function vPortafolio() {
+  const ps = myProjects(); const adm = isAdmin() && !Store.readOnly;
+  const rows = ps.map(p => ({ p, r: p.id === GHSync.proj ? resumenProyecto() : p.resumen }));
+  const cnt = k => rows.filter(x => semaforo(x.r)[0] === k).length;
+  return `<div class="v-head"><div><h1>Mis proyectos</h1><p>Cómo va cada obra a tu cargo. Primero lo que requiere atención; entra a cualquier proyecto con un clic.</p></div>${adm ? `<button class="btn primary" data-action="proj-new">${ICON.plus} Nuevo proyecto</button>` : ''}</div>
+  <section class="kpis" style="margin-top:0;grid-template-columns:repeat(4,minmax(0,1fr))"><div class="kpi"><div class="k-l">Proyectos</div><div class="k-v num">${ps.length}</div><div class="k-s">a tu cargo</div></div><div class="kpi ${cnt('bad') ? 'alert' : ''}"><div class="k-l">Atender</div><div class="k-v num ${cnt('bad') ? 'bad' : ''}">${cnt('bad')}</div><div class="k-s">atraso, pendientes vencidos o sin captura</div></div><div class="kpi"><div class="k-l">Vigilar</div><div class="k-v num ${cnt('warn') ? 'warn' : ''}">${cnt('warn')}</div><div class="k-s">señales tempranas</div></div><div class="kpi"><div class="k-l">En control</div><div class="k-v num good">${cnt('ok')}</div><div class="k-s">sin alertas</div></div></section>
+  <div class="pf-grid">${rows.sort((a, b) => ['bad', 'warn', 'ok', 'mut'].indexOf(semaforo(a.r)[0]) - ['bad', 'warn', 'ok', 'mut'].indexOf(semaforo(b.r)[0])).map(({ p, r }) => { const [c, t] = semaforo(r); const cur = p.id === GHSync.proj;
+    return `<button class="pf-card ${c}" data-action="proj-go" data-id="${esc(p.id)}"><div class="pf-h"><span class="pill ${c}">${t}</span>${cur ? '<span class="pill blue">Abierto</span>' : ''}<span class="hint-line" style="margin-left:auto">${r?.at ? 'Actualizado ' + fStamp(r.at) : 'Sin resumen aún'}</span></div>
+      <b class="pf-n">${esc(p.nombre)}</b><span class="hint-line">${esc([p.cliente, p.gerencia].filter(Boolean).join(' · '))}</span>
+      <div class="pf-k"><div><small>Avance real</small><b>${r?.avance != null ? fmtP(r.avance, 1) : '–'}</b><span>${r?.prog != null ? 'prog. ' + fmtP(r.prog, 1) : ''}</span></div><div><small>SPI</small><b class="${r?.spi == null ? '' : r.spi >= .97 ? 'good' : r.spi >= .9 ? 'warn' : 'bad'}">${r?.spi != null ? fmtN(r.spi, 2) : '–'}</b><span>${r?.cpi != null ? 'CPI ' + fmtN(r.cpi, 2) : ''}</span></div><div><small>Mes vs pronóstico</small><b>${r?.prono != null ? fmtP(r.prono) : '–'}</b><span>${r?.pronoEsp != null ? 'esperado ' + fmtP(r.pronoEsp) : ''}</span></div><div><small>Captura 6 días</small><b class="${r?.captura == null ? '' : r.captura >= .85 ? 'good' : r.captura >= .5 ? 'warn' : 'bad'}">${r?.captura != null ? fmtP(r.captura) : '–'}</b><span>${r?.ultimo ? 'último ' + fShort(pd(r.ultimo)) : 'sin reportes'}</span></div></div>
+      <div class="pf-f">${r ? `<span>${r.alertas} alertas</span><span>${r.pendVenc} pendientes vencidos</span><span>${r.incid} incidencias</span>` : '<span>Entra al proyecto para generar su resumen</span>'}</div></button>`; }).join('')}</div>
+  ${!GHSync.dir ? `<div class="ghost-note" style="margin-top:14px"><span>Este piloto tiene un solo proyecto. ${adm ? 'Para manejar varias obras, activa el modo de varios proyectos.' : ''}</span>${adm ? '<button class="btn sm primary" data-action="proj-activar">Activar varios proyectos</button>' : ''}</div>` : ''}`;
+}
+function openProjPicker() {
+  const ps = myProjects();
+  modal(`<div class="sheet-head"><h2>Cambiar de proyecto</h2><button class="x-btn" data-action="close">${ICON.x}</button></div><div class="sheet-body">${ps.map(p => `<button class="res" data-action="proj-go" data-id="${esc(p.id)}"><div class="r-t"><b>${esc(p.nombre)}</b>${p.id === GHSync.proj ? ' <span class="pill blue">Abierto</span>' : ''}</div><div class="hint-line">${esc([p.cliente, p.gerencia].filter(Boolean).join(' · '))}</div></button>`).join('')}<button class="btn" data-action="go" data-v="portafolio">Ver todos en Mis proyectos</button></div>`);
+}
+async function activarMultiproyecto() {
+  if (Store.mode !== 'github') { toast('Varios proyectos funciona con la versión en línea (GitHub).', true); return; }
+  const p = Store.doc('project') || {}; const id = slug(p.name || 'proyecto').toLowerCase().slice(0, 24) || 'proyecto';
+  if (!await ask(`Se creará el directorio de proyectos con “${p.name || 'este proyecto'}” como primer proyecto. Los usuarios pasan al directorio y se les asigna este proyecto; después puedes darles acceso a otros. ¿Continuar?`, { si: 'Activar' })) return;
+  const us = ((Store._doc('users') || {}).rows || []).map(u => Object.assign({}, u, { proyectos: ['gerente', 'control', 'super'].includes(u.rol) ? ['*'] : [id] }));
+  GHSync.dir = { proyectos: [{ id, nombre: p.name || 'Proyecto', carpeta: GHSync.folder, cliente: p.client || '', gerencia: p.gerencia || '' }], usuarios: us }; GHSync.proj = id; GHSync.dirDirty = true;
+  await GHSync.flush(); await Store.log('activó varios proyectos', p.name); toast('Listo: ya puedes crear más proyectos.'); S.view = 'portafolio'; render();
+}
+async function nuevoProyecto() {
+  if (!GHSync.dir) return activarMultiproyecto();
+  const nombre = await askText('Nuevo proyecto', 'Nombre de la obra', { si: 'Crear', required: true }); if (!nombre) return;
+  let id = slug(nombre).toLowerCase().slice(0, 24) || 'obra'; while (GHSync.dir.proyectos.some(p => p.id === id)) id += '-2';
+  const folder = `proyectos/${id}`; const now = Date.now();
+  try {
+    await GHSync.write(`${folder}/base.json`, { d: { project: { name: nombre } }, arr: { catalog: [], program: [], hc: [], baseline: [], hist: [], remis: [] }, _meta: { by: who(), at: now } }, null, `${who()}: creó el proyecto ${nombre}`);
+    await GHSync.write(`${folder}/ops.json`, { c: Object.fromEntries(COLLS.map(c => [c, []])), _meta: { by: who(), at: now } }, null, `${who()}: creó el proyecto ${nombre}`);
+  } catch (e) { toast('No se pudo crear: ' + e.message, true); return; }
+  GHSync.dir.proyectos.push({ id, nombre, carpeta: folder, cliente: '', gerencia: '' }); const u = me(); if (u && u.proyectos && !u.proyectos.includes('*')) u.proyectos.push(id);
+  GHSync.dirDirty = true; await GHSync.flush(); await switchProject(id, true); S.view = 'programa'; S.sub.programa = 'importar'; render(); toast('Proyecto creado. Carga la plantilla base para llenarlo.');
+}
+
+/* ==========================================================================
+   v6 · Mi día: la entrada del residente
+   ========================================================================== */
+function misCompromisos() { const u = me(); const d = planDoc(mondayOf(TODAY())); return d.comp.filter(c => !u || !c.resp || norm(c.resp) === norm(u.nombre) || (u.frentes || []).includes(c.frente)); }
+function repHoy() { const u = me(); return M.reports().filter(r => r.date === iso(TODAY()) && (!u || r.author?.uid === u.id || norm(r.author?.name) === norm(u?.nombre))).slice(-1)[0] || null; }
+function vMidia() {
+  const u = me(); const hoy = TODAY(); const rep = repHoy(); const eqs = usersOn() && u ? equiposDe(u.id) : equiposDe(null); const comp = misCompromisos();
+  const pend = M.pend().filter(p => p.estatus !== 'Cerrada' && (!u || norm(p.responsable) === norm(u.nombre)));
+  const inc = Store.list('obs').filter(o => o.estatus === 'Abierta' && (!u || norm(o.responsable) === norm(u.nombre)));
+  const vales = Store.list('vales').filter(v => v.tipo === 'salida' && !v.aplicado && !v.clave && (!u || v.resp === u.id));
+  const draft = loadDraft(null);
+  const st = rep?.firma ? ['ok', 'Firmado', 'Ver reporte'] : rep ? ['warn', 'Borrador sin firmar', 'Continuar y firmar'] : draft ? ['warn', 'Empezado, sin guardar', 'Continuar'] : ['bad', 'Pendiente', 'Empezar reporte'];
+  const maqHoy = rep ? (rep.maquinaria || []).filter(m => m.equipoId).length : 0;
+  const days = Array.from({ length: 14 }, (_, i) => addDays(hoy, -13 + i)).filter(isWorkday); const mine = r => !u || r.author?.uid === u.id || norm(r.author?.name) === norm(u?.nombre);
+  const step = (n, t, s, cls, btn, act, extra) => `<div class="md-step ${cls}"><span class="md-n">${n}</span><div class="md-b"><b>${t}</b><span>${s}</span>${extra || ''}</div>${btn ? `<button class="btn ${cls === 'bad' || cls === 'warn' ? 'primary' : ''}" ${act}>${btn}</button>` : ''}</div>`;
+  const done = [rep?.firma, eqs.length ? maqHoy >= eqs.length : true, comp.length ? comp.every(c => compCumple(c, mondayOf(hoy))) || (rep && (rep.avances || []).length) : true, !pend.length && !inc.length].filter(Boolean).length;
+  return `<div class="md-hero"><div><span class="hint-line">${fLong(hoy)} · ${esc((Store.doc('project') || {}).name || '')}</span><h1>Hola${u ? ', ' + esc(u.nombre.split(' ')[0]) : ''}</h1><p>Esto es lo que te toca hoy. Empieza por el reporte: lo demás se llena desde ahí.</p></div><div class="md-ring" style="--p:${done / 4 * 100}"><b>${done}/4</b><span>listo</span></div></div>
+  <div class="md-steps">
+    ${step(1, 'Reporte del día', `${st[1]}${rep ? ' · ' + esc(rep.frente || '') : ''}`, st[0], st[2], rep?.firma ? `data-action="open-report" data-id="${rep.id}"` : rep ? `data-action="edit-report" data-id="${rep.id}"` : 'data-action="new-report"')}
+    ${step(2, 'Maquinaria a tu cargo', eqs.length ? `${eqs.length} equipos · ${maqHoy ? `${maqHoy} reportados hoy` : 'falta reportar horómetros y vale'}` : 'No tienes equipos asignados', eqs.length && maqHoy < eqs.length ? 'warn' : 'ok', eqs.length && !rep?.firma ? 'Reportar horómetros' : '', 'data-action="md-open" data-k="maq"')}
+    ${step(3, 'Compromisos de la semana', comp.length ? `${comp.filter(c => compCumple(c, mondayOf(hoy))).length} de ${comp.length} cumplidos` : 'Sin compromisos asignados esta semana', comp.length ? 'warn' : 'ok', comp.length && !rep?.firma ? 'Reportar avance' : '', 'data-action="md-open" data-k="avance"', comp.length ? `<div class="md-list">${comp.slice(0, 5).map(c => { const e = compEjec(c, mondayOf(hoy)) || 0; return `<span>${esc(c.clave)} ${esc(((M.cmap().get(c.clave) || {}).desc || c.desc || '').slice(0, 44))} · <b>${fmtQ(Math.round(e * 10) / 10)} de ${fmtQ(c.cant)}</b></span>`; }).join('')}</div>` : '')}
+    ${step(4, 'Por atender', `${pend.length} pendientes · ${inc.length} incidencias por corregir · ${vales.length} materiales por aplicar`, pend.length || inc.length || vales.length ? 'warn' : 'ok', pend.length || inc.length || vales.length ? 'Ver bandeja' : '', 'data-action="inbox"')}
+  </div>
+  <div class="card" style="margin-top:18px"><h3>Tus últimas dos semanas</h3><div class="sub">Verde: firmado · amarillo: borrador · rojo: día hábil sin reporte</div><div class="cal" style="max-width:none">${days.map(d => { const rs = M.reports().filter(r => r.date === iso(d) && mine(r)); const c = d > hoy || (u?.createdAt && d < pd(iso(new Date(u.createdAt)))) ? 'na' : rs.length ? (rs.some(r => r.firma) ? 'ok' : 'dr') : 'no'; return `<span class="${c}" style="width:22px;height:22px" title="${fLong(d)}"></span>`; }).join('')}</div></div>`;
+}
+async function mdOpen(sec) {
+  const rep = repHoy(); if (rep?.firma) { reportDetail(rep.id); return; }
+  if (rep) openReport(Store.get('reports', rep.id)); else openReport(null);
+  if (!R) return;
+  if (sec === 'avance') { addCompromisos(); R._open = new Set(['avance']); }
+  if (sec === 'maq') R._open = new Set(['maq']);
+  renderComposer();
+}
+function addCompromisos() {
+  const have = new Set(R.avances.map(a => a.clave + '|' + (a.fase || ''))); let n = 0;
+  misCompromisos().filter(c => c.clave && !compCumple(c, mondayOf(TODAY()))).forEach(c => { if (!have.has(c.clave + '|' + (c.fase || ''))) { R.avances.push({ clave: c.clave, fase: c.fase || '', qty: '', q: '' }); n++; } });
+  if (n) toast(`Se agregaron ${n} conceptos de tus compromisos; solo escribe la cantidad.`); else toast('Tus compromisos ya están en el reporte.');
+}
+
+/* ---------- Borrador automático del reporte (no se pierde lo capturado) ---------- */
+const draftKey = id => `bitacora.draft.${GHSync.proj || 'p'}.${id || 'nuevo'}`;
+function saveDraft() { if (!R) return; try { const { pending, _open, _sugg, saving, err, ...rest } = R; localStorage.setItem(draftKey(R.id), JSON.stringify(Object.assign(rest, { _at: Date.now() }))); } catch (e) { } }
+function loadDraft(id) { try { const d = JSON.parse(localStorage.getItem(draftKey(id)) || 'null'); if (!d) return null; if (!id && d.date !== iso(TODAY())) return null; return d; } catch (e) { return null; } }
+function clearDraft(id) { try { localStorage.removeItem(draftKey(id)); } catch (e) { } }
+
+/* ==========================================================================
+   v6 · Insumos por concepto (recetas) con versiones, y conciliación de insumos
+   ========================================================================== */
+const CAT_INSUMO = ['Concreto', 'Agregados y pétreos', 'Acero', 'Asfaltos', 'Tubería', 'Eléctrico', 'Cimbra', 'Otro'];
+function recetas() { const r = Store.doc('recetas') || { versiones: [] }; return r.versiones || []; }
+function recetaVig() { const v = recetas(); return v.length ? v[v.length - 1] : null; }
+function insumos() { return [...new Set((recetaVig()?.rows || []).map(r => r.insumo))]; }
+function consumoTeorico(rows, qtyFn) { const out = {}; (rows || []).forEach(r => { const q = qtyFn(r.clave); if (!q) return; const k = `${r.insumo}|${r.unidad}`; out[k] = out[k] || { insumo: r.insumo, unidad: r.unidad, cat: r.cat, cant: 0, costo: 0 }; out[k].cant += q * num(r.cant); out[k].costo += q * num(r.cant) * num(r.costo); }); return out; }
+function vInsumos() {
+  const vs = recetas(); const sel = vs.find(v => v.v === S.recV) || vs[vs.length - 1]; const prev = sel ? vs[vs.indexOf(sel) - 1] : null;
+  if (!sel) return `<div class="callout"><b>Insumos por concepto.</b> Aquí se carga cuánto de cada insumo lleva cada concepto (la “receta”): por ejemplo, 1 m³ de losa MR-48 lleva 1.03 m³ de concreto, o 1 m³ de base hidráulica lleva 1.3 m³ de material. Con eso la plataforma calcula el consumo teórico y lo cuadra contra los vales de almacén y las remisiones. Cada carga queda como una versión para comparar cambios.</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">${isAdmin() && !Store.readOnly ? `<label class="btn primary">${ICON.up} Cargar insumos (Excel)<input type="file" accept=".xlsx,.xlsm,.xls,.csv" data-import="recetas" hidden></label>` : ''}<button class="btn" data-action="rec-tpl">${ICON.dl} Plantilla</button></div>`;
+  const by = new Map(); sel.rows.forEach(r => { if (!by.has(r.clave)) by.set(r.clave, []); by.get(r.clave).push(r); });
+  const vig = c => num((M.cmap().get(c) || {}).cant); const tA = consumoTeorico(sel.rows, vig), tP = prev ? consumoTeorico(prev.rows, vig) : null;
+  return `<div class="tb-row" style="margin-bottom:12px"><select class="input" style="width:auto" data-input="recv">${vs.map(v => `<option value="${v.v}" ${v === sel ? 'selected' : ''}>Versión ${v.v} · ${fShort(new Date(v.at))} · ${esc(v.by || '')}${v.nota ? ' · ' + esc(v.nota.slice(0, 30)) : ''}</option>`).join('')}</select>${isAdmin() && !Store.readOnly ? `<label class="btn">${ICON.up} Cargar nueva versión<input type="file" accept=".xlsx,.xlsm,.xls,.csv" data-import="recetas" hidden></label>` : ''}<button class="btn ghost" data-action="rec-tpl">${ICON.dl} Plantilla con datos</button><span class="hint-line">${by.size} conceptos · ${insumos().length} insumos</span></div>
+  <div class="grid2 g-main"><div class="card"><h3>Presupuesto de insumos (catálogo vigente)</h3><div class="sub">Cantidad vigente de cada concepto × consumo por unidad${prev ? `; cambio contra la versión ${prev.v}` : ''}</div>
+    <div class="tbl-wrap" style="border:0"><table class="tbl"><thead><tr><th>Insumo</th><th class="n">Cantidad</th>${tP ? '<th class="n">Cambio vs anterior</th>' : ''}<th class="n">Costo</th></tr></thead><tbody>${Object.values(tA).sort((a, b) => b.costo - a.costo || b.cant - a.cant).map(x => { const pv = tP?.[`${x.insumo}|${x.unidad}`]; const d = pv ? x.cant - pv.cant : null; return `<tr><td><b>${esc(x.insumo)}</b><br><span class="hint-line">${esc(x.cat || '')}</span></td><td class="n">${fmtQ(Math.round(x.cant))} ${esc(x.unidad)}</td>${tP ? `<td class="n" style="color:${d ? (d > 0 ? 'var(--red)' : 'var(--ok)') : 'inherit'}">${d == null ? 'nuevo' : (d > 0 ? '+' : '') + fmtQ(Math.round(d))}</td>` : ''}<td class="n">${x.costo ? fmtM(x.costo) : '–'}</td></tr>`; }).join('')}</tbody></table></div></div>
+    <div class="card"><h3>Receta por concepto</h3><div class="sub">Consumo por unidad del concepto</div><div class="tbl-wrap" style="border:0;max-height:420px"><table class="tbl"><tbody>${[...by].map(([k, rs]) => `<tr class="grp"><td colspan="3">${esc(k)} · ${esc(((M.cmap().get(k) || {}).desc || '').slice(0, 60))}</td></tr>${rs.map(r => `<tr><td>${esc(r.insumo)}</td><td class="n">${fmtN(r.cant, 3)} ${esc(r.unidad)}</td><td class="n hint-line">${r.costo ? '$' + fmtN(r.costo, 2) : ''}</td></tr>`).join('')}`).join('')}</tbody></table></div></div></div>`;
+}
+async function importRecetas(file) {
+  const { rows } = await parseSheet(file, ['clave', 'insumo', 'catins', 'unidad', 'cant', 'pu']);
+  const out = rows.map(r => ({ clave: String(r.clave ?? '').trim(), insumo: String(r.insumo ?? '').trim(), cat: String(r.catins ?? '').trim() || 'Otro', unidad: String(r.unidad ?? '').trim(), cant: num(r.cant), costo: num(r.pu) })).filter(r => r.clave && r.insumo && r.cant);
+  if (!out.length) throw new Error('No encontré renglones con Clave, Insumo y Cantidad por unidad. Usa la plantilla.');
+  const nota = await askText('Nueva versión de insumos', 'Qué cambió en esta versión (opcional)', { si: 'Guardar versión' }); if (nota == null) return;
+  const vs = recetas(); const v = { v: (vs[vs.length - 1]?.v || 0) + 1, at: Date.now(), by: who(), nota, rows: out };
+  await Store.setDoc('recetas', { versiones: [...vs, v] }); await Store.log('cargó insumos por concepto', file.name, `versión ${v.v}, ${out.length} renglones`);
+  S.recV = v.v; toast(`Versión ${v.v} guardada: ${new Set(out.map(r => r.clave)).size} conceptos.`); S.view = 'programa'; S.sub.programa = 'insumos'; render();
+}
+function recetaTpl() {
+  if (!window.XLSX) return; const v = recetaVig();
+  const data = v ? v.rows.map(r => ({ Clave: r.clave, Concepto: (M.cmap().get(r.clave) || {}).desc || '', Insumo: r.insumo, Categoría: r.cat, Unidad: r.unidad, 'Cantidad por unidad': r.cant, 'Costo unitario': r.costo || '' }))
+    : M.concepts().filter(c => esConcreto(c)).slice(0, 8).map(c => ({ Clave: c.clave, Concepto: c.desc, Insumo: 'Concreto premezclado ' + (c.desc.match(/MR[- =]?\d+|f.?c ?=? ?\d+/i) || [''])[0], Categoría: 'Concreto', Unidad: 'm3', 'Cantidad por unidad': 1.03, 'Costo unitario': '' })).concat([{ Clave: '(clave)', Concepto: 'Base hidráulica', Insumo: 'Material para base hidráulica', Categoría: 'Agregados y pétreos', Unidad: 'm3', 'Cantidad por unidad': 1.3, 'Costo unitario': '' }]);
+  saveFile('plantilla_insumos_por_concepto.xlsx', wbFromSheets({ Insumos: data }));
+}
+function vConciliacion() {
+  const v = recetaVig(); const ex = M.execByClave(null); const vig = c => num((M.cmap().get(c) || {}).cant);
+  const pre = consumoTeorico(v?.rows, vig), teo = consumoTeorico(v?.rows, c => ex[c] || 0);
+  const V = Store.list('vales'); const rem = Store.arr.remis || [];
+  const keys = new Set([...Object.keys(pre), ...V.map(x => `${x.material}|${x.unidad || ''}`)]);
+  const rows = [...keys].map(k => { const [ins, un] = k.split('|'); const ent = V.filter(x => x.tipo === 'entrada' && norm(x.material) === norm(ins)).reduce((a, x) => a + num(x.qty), 0) + (/concreto/i.test(ins) ? rem.reduce((a, x) => a + num(x.vol), 0) : 0); const sal = V.filter(x => x.tipo === 'salida' && norm(x.material) === norm(ins)).reduce((a, x) => a + num(x.qty), 0); const t = teo[k]?.cant || 0; return { ins, un, cat: pre[k]?.cat || teo[k]?.cat || '', pre: pre[k]?.cant || 0, teo: t, ent, sal, dif: ent - t }; }).filter(r => r.pre || r.ent || r.sal);
+  return `<div class="callout">Cuadre por insumo: lo <b>presupuestado</b> (catálogo vigente × receta), el <b>consumo teórico</b> (avance capturado × receta), lo <b>recibido</b> (vales de entrada y, para concreto, remisiones de CEMEX Go) y lo <b>entregado</b> a los frentes. Si lo recibido rebasa el consumo teórico, hay desperdicio, material en patio o avance sin capturar.</div>
+  ${!v ? `<div class="ghost-note"><span>Para calcular el consumo teórico hace falta cargar los <b>insumos por concepto</b> en Catálogo y programa.</span>${isAdmin() ? '<button class="btn sm primary" data-action="sub" data-v="programa" data-k="insumos">Ir a insumos</button>' : ''}</div>` : ''}
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Insumo</th><th class="n">Presupuestado</th><th class="n">Consumo teórico</th><th class="n">Recibido</th><th class="n">Entregado</th><th class="n">Existencia</th><th class="n">Recibido − teórico</th></tr></thead><tbody>
+  ${rows.length ? rows.sort((a, b) => Math.abs(b.dif) - Math.abs(a.dif)).map(r => { const pct = r.teo ? r.dif / r.teo : null; return `<tr><td><b>${esc(r.ins)}</b><br><span class="hint-line">${esc(r.cat)}</span></td><td class="n">${fmtQ(Math.round(r.pre))} ${esc(r.un)}</td><td class="n">${fmtQ(Math.round(r.teo))}</td><td class="n">${fmtQ(Math.round(r.ent))}</td><td class="n">${fmtQ(Math.round(r.sal))}</td><td class="n" style="${r.ent - r.sal < 0 ? 'color:var(--red)' : ''}">${fmtQ(Math.round(r.ent - r.sal))}</td><td class="n" style="color:${pct != null && Math.abs(pct) > .05 ? 'var(--red)' : 'inherit'}"><b>${fmtQ(Math.round(r.dif))}</b>${pct != null ? `<br><span class="hint-line">${fmtP(pct, 1)}</span>` : ''}</td></tr>`; }).join('') : ghostRows(4, 7)}
+  </tbody></table></div>`;
+}
+
+/* ==========================================================================
+   v6 · Retroalimentación del piloto: fallas, dudas y sugerencias
+   ========================================================================== */
+function openFeedback() {
+  modal(`<div class="sheet-head"><h2>Reportar falla o sugerencia</h2><button class="x-btn" data-action="close">${ICON.x}</button></div><div class="sheet-body">
+  <div class="seg" id="fb-t">${['Falla', 'Sugerencia', 'Duda'].map((x, i) => `<button data-action="fb-tipo" data-k="${x}" aria-pressed="${i === 0}">${x}</button>`).join('')}</div>
+  <div class="field"><label>Qué pasó o qué propones</label><textarea class="input" id="fb-d" style="min-height:110px" placeholder="Ej. En Maquinaria no me deja guardar el horómetro cuando…"></textarea></div>
+  <div class="field"><label>Captura de pantalla (opcional)</label><input type="file" id="fb-f" accept="image/*"></div><span class="hint-line">Se guarda con tu nombre y la sección donde estás (${esc(S.view)}).</span></div>
+  <div class="sheet-foot"><button class="btn" data-action="close">Cancelar</button><button class="btn primary" data-action="fb-save">Enviar</button></div>`);
+}
+async function saveFeedback() {
+  const d = $('#fb-d').value.trim(); if (!d) { $('#fb-d').focus(); return; } const f = $('#fb-f').files[0]; const files = f ? await uploadAll([{ file: f }]) : [];
+  const tipo = ($('#fb-t [aria-pressed="true"]') || {}).dataset?.k || 'Falla';
+  await Store.put('feedback', { id: uid('k'), tipo, texto: d, vista: S.view, sub: S.sub[S.view] || '', files, estatus: 'Nueva', by: who(), at: Date.now(), fecha: iso(TODAY()) }); closeModal(); toast('Gracias. Quedó registrado para Planeación.');
+}
+function cfgFeedback() {
+  const L = Store.list('feedback').slice().sort((a, b) => b.at - a.at);
+  return `<div class="callout">Lo que reportan los usuarios desde el botón <b>Reportar falla o sugerencia</b>. Márcalas en revisión o resueltas para llevar el control del piloto.</div>
+  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Fecha</th><th>Tipo</th><th>Qué reportó</th><th>Sección</th><th>Quién</th><th>Estatus</th></tr></thead><tbody>${L.length ? L.map(x => `<tr><td style="white-space:nowrap">${fStamp(x.at)}</td><td><span class="pill ${x.tipo === 'Falla' ? 'bad' : x.tipo === 'Duda' ? 'warn' : 'blue'}">${esc(x.tipo)}</span></td><td>${esc(x.texto)}${(x.files || []).length ? `<br><a class="link-btn" href="${esc(Store.fileUrl(x.files[0]))}" target="_blank" rel="noopener">Ver captura</a>` : ''}</td><td class="hint-line">${esc(x.vista)}${x.sub ? ' › ' + esc(x.sub) : ''}</td><td>${esc(x.by)}</td><td>${Store.readOnly ? esc(x.estatus) : `<select class="input sm" data-fbst="${x.id}">${['Nueva', 'En revisión', 'Resuelta'].map(e => `<option ${x.estatus === e ? 'selected' : ''}>${e}</option>`).join('')}</select>`}</td></tr>`).join('') : ghostRows(3, 6)}</tbody></table></div>`;
+}
+
+/* ==========================================================================
+   v6 · Validación de aditivas y deductivas antes de aplicarse
+   ========================================================================== */
+function flujoMods() { return ((Store.doc('project') || {}).flujoMods || []); }
+function modSteps(m) { const imp = Math.abs(m.lines.reduce((s, l) => s + num(l.delta) * num(l.pu), 0)); return flujoMods().filter(st => imp >= num(st.min)).map(st => st.rol); }
+function modNext(m) { if (m.estado !== 'Por validar') return null; return modSteps(m).find(rl => !(m.aprob || []).some(a => a.rol === rl && a.ok)) || null; }
+async function applyModLines(m) {
+  const cat = clone(Store.arr.catalog || []); const by = new Map(cat.map(c => [c.clave, c])); const out = [];
+  for (const l of m.lines) { const c = by.get(l.clave); if (c && !l.nuevo) { const antes = num(c.cant); c.cant = Math.max(0, antes + num(l.delta)); c.mods = [...(c.mods || []), m.ref]; out.push(Object.assign({}, l, { antes, despues: c.cant })); } else if (!c) { const n = { clave: l.clave, desc: l.desc, unidad: l.unidad, cant0: 0, cant: num(l.delta), pu: num(l.pu), cc: l.cc || 'Extraordinarios', partida: l.partida || m.ref, tipo: 'Extraordinario', conv: m.ref, mods: [m.ref] }; cat.push(n); out.push(Object.assign({}, l, { antes: 0, despues: n.cant })); } }
+  await Store.setArr('catalog', cat); return out;
+}
+async function modDecide(id, ok) {
+  const nota = await askText(ok ? 'Validar modificación' : 'Rechazar modificación', ok ? 'Comentario (opcional)' : 'Motivo del rechazo', { si: ok ? 'Validar' : 'Rechazar', required: !ok }); if (nota == null) return;
+  const rows = clone(((Store.doc('cambios') || {}).rows) || []); const m = rows.find(x => x.id === id); const n = modNext(m); if (!n) return;
+  m.aprob = [...(m.aprob || []), { rol: n, by: who(), at: Date.now(), ok, nota }];
+  if (!ok) m.estado = 'Rechazada'; else if (!modNext(m)) { m.lines = await applyModLines(m); m.estado = 'Aplicada'; m.aplicadaAt = Date.now(); }
+  await Store.setDoc('cambios', { rows }); await Store.log(ok ? 'validó modificación' : 'rechazó modificación', m.ref, ROL[n]?.label); toast(m.estado === 'Aplicada' ? 'Validada y aplicada al catálogo.' : ok ? 'Validada; sigue el siguiente paso.' : 'Modificación rechazada.');
+}
+
+function personas() { return [...new Set([...users().map(u => u.nombre), ...(Store.arr.hc || []).map(h => h.nombre)].filter(Boolean))].sort((a, b) => a.localeCompare(b, 'es')); }
+function faseResp(fase) { const ph = M.phases().find(p => p.name === fase); const n = String(ph?.responsables || '').split(',').map(x => x.trim()).filter(Boolean)[0] || ''; if (!n) return ''; const hit = personas().find(p => norm(p) === norm(n) || norm(p).includes(norm(n)) || norm(n).includes(norm(p))); return hit || n; }
+function cfgEquiposProyecto() {
+  const act = Store.list('equipos').filter(eqActivo); const adm = isAdmin() && !Store.readOnly;
+  return `<div class="card" style="margin-bottom:18px"><h3 style="display:flex;justify-content:space-between;align-items:center;gap:8px">Maquinaria del proyecto ${adm ? `<button class="btn sm primary" data-action="eq-new">${ICON.plus} Dar de alta máquina</button>` : ''}</h3><div class="sub">Control de obra o el coordinador da de alta cada equipo al inicio, con su fase; el responsable se toma del responsable de la fase. Los residentes solo reportan horómetros, actividad y el vale del día.</div>
+  ${act.length ? `<div class="tbl-wrap" style="border:0"><table class="tbl"><thead><tr><th>Equipo</th><th>Fase</th><th>Responsable</th><th>Propiedad</th><th></th></tr></thead><tbody>${act.map(e => `<tr><td><b>${esc(eqName(e))}</b><br><span class="hint-line">${esc(eqId(e))}</span></td><td>${esc(e.fase || '–')}</td><td>${esc(e.respName || '–')}</td><td>${e.prop === 'rentada' ? 'Rentada · ' + esc(e.owner || '') : 'Propia'}</td><td>${adm ? `<button class="btn sm ghost" data-action="eq-edit" data-id="${e.id}">Editar</button>` : ''}</td></tr>`).join('')}</tbody></table></div><button class="link-btn" data-action="go" data-v="equipos">Ver costos, transferencias y bajas en Maquinaria en obra</button>` : '<p class="hint-line" style="margin:0">Aún no hay maquinaria dada de alta.</p>'}
+  <label class="check" style="margin-top:12px"><input type="checkbox" id="vale-obl" ${(Store.doc('project') || {}).valeMaq !== false ? 'checked' : ''} data-valemaq style="accent-color:var(--brand)"><span><b>Foto del vale de maquinaria obligatoria para firmar</b><span>Cada equipo que operó necesita la foto de su vale del día.</span></span></label></div>`;
+}
+function cfgFlujosMods() {
+  const st = flujoMods();
+  return `<div class="card" style="max-width:760px;margin-top:18px"><h3>Aditivas, deductivas y extraordinarios</h3><div class="sub">Si no hay pasos, se aplican al catálogo en cuanto se registran con su archivo firmado. Con pasos, quedan “por validar” y se aplican al terminar la cadena.</div>
+  <div class="rows" id="flm-rows">${st.map((x, i) => `<div class="rowc"><div class="fgrid" style="grid-template-columns:40px 2fr 1.5fr"><b style="align-self:center">${i + 1}.</b><div><span class="mini-l">Valida</span><select class="input sm" data-flm="rol">${Object.entries(ROL).filter(([k]) => k !== 'consulta').map(([k, r]) => `<option value="${k}" ${x.rol === k ? 'selected' : ''}>${r.label}</option>`).join('')}</select></div><div><span class="mini-l">Solo si el importe es mayor a (MXN)</span><input class="input sm" type="number" data-flm="min" value="${num(x.min) || 0}"></div></div><button class="rm-row" data-action="flm-del" data-i="${i}">×</button></div>`).join('') || '<p class="hint-line" style="margin:0">Aplicación directa (sin validación en la plataforma).</p>'}</div>
+  ${Store.readOnly || !isAdmin() ? '' : `<div style="display:flex;gap:8px;margin-top:10px"><button class="btn sm" data-action="flm-add">${ICON.plus} Paso</button><button class="btn sm primary" data-action="flm-save">Guardar flujo</button></div>`}</div>`;
+}
+function readFlujoMods() { return $$('#flm-rows .rowc').map(r => ({ rol: $('[data-flm="rol"]', r).value, min: num($('[data-flm="min"]', r).value) })); }
+async function importProno(file) {
+  const P = M.prono(S.pronoMonth); const { rows } = await parseSheet(file, ['clave', 'fase', 'cant', 'desc']);
+  const ov = {}; let n = 0; rows.forEach(r => { const cl = String(r.clave ?? '').trim(); const q = num(r.cant); if (!cl || !q) return; ov[`${cl}|${String(r.fase ?? '').trim() || '*'}`] = q; n++; });
+  if (!n) throw new Error('No encontré renglones con Clave y Volumen. Descarga la plantilla del mes.');
+  if (!await ask(`Se cargará el pronóstico de ${mLabel(P.mk)} con ${n} conceptos. Reemplaza el pronóstico capturado de ese mes. ¿Continuar?`, { si: 'Cargar' })) return;
+  const all = Object.assign({}, Store.doc('prono') || {}); all[P.mk] = ov; await Store.setDoc('prono', all); await Store.log('cargó pronóstico del mes', file.name, `${mLabel(P.mk)}: ${n} conceptos`); toast('Pronóstico cargado.'); render();
+}
+function pronoTpl() { if (!window.XLSX) return; const P = M.prono(S.pronoMonth); saveFile(`pronostico_${P.mk}_plantilla.xlsx`, wbFromSheets({ ['Pronóstico ' + P.mk]: P.rows.filter(r => r.plan > 0).map(r => ({ Clave: r.clave, Concepto: r.desc, Fase: r.fase, Unidad: r.unidad, Volumen: Math.round(r.plan * 100) / 100 })) })); }
+
 /* ==========================================================================
    Render principal y eventos
    ========================================================================== */
@@ -3507,7 +3793,7 @@ function render() {
   renderChrome(); if (!Store.ready) return;
   const ae = document.activeElement; const keep = ae && ae.dataset && ae.dataset.input ? { k: ae.dataset.input, s: ae.selectionStart, e: ae.selectionEnd } : null;
   destroyCharts();
-  const v = { tablero: vTablero, pend: vPend, calidad: vCalidad, plan: vPlan, equipos: vEquipos, almacen: vAlmacen, bitacora: vBitacora, hitos: vHitos, programa: vPrograma, control: vControl, financiero: vFinanciero, expediente: vExpediente, reportes: vReportes, config: vConfig }[S.view] || vTablero;
+  const v = { portafolio: vPortafolio, midia: vMidia, tablero: vTablero, pend: vPend, calidad: vCalidad, plan: vPlan, equipos: vEquipos, almacen: vAlmacen, bitacora: vBitacora, hitos: vHitos, programa: vPrograma, control: vControl, financiero: vFinanciero, expediente: vExpediente, reportes: vReportes, config: vConfig }[S.view] || vTablero;
   $('#main').innerHTML = `<div class="view">${reminderHTML()}${v()}</div>`;
   drawCharts(); drawExtra();
   if (keep) { const el = $(`#main [data-input="${keep.k}"]`); if (el) { el.focus(); try { el.setSelectionRange(keep.s, keep.e); } catch (e) { } } }
@@ -3515,7 +3801,7 @@ function render() {
 function go(v) { if (v === 'more') return openMore(); if (!canView(v)) v = homeView(); S.view = v; closeModalSoft(); render(); window.scrollTo({ top: 0 }); }
 function closeModalSoft() { if (!R && $('#modal-root').innerHTML) { $('#modal-root').innerHTML = ''; document.body.style.overflow = ''; } }
 function openMore() {
-  modal(`<div class="sheet-head"><h2>Secciones</h2><button class="x-btn" data-action="close">${ICON.x}</button></div><div class="more-sheet">${NAV.flatMap(g => g.items).filter(([k]) => canView(k)).map(([k, l]) => `<button data-action="go" data-v="${k}">${ICON[k]}${l}</button>`).join('')}<button data-action="inbox">${ICON.bell} Mi bandeja</button>${usersOn() ? '<button data-action="logout">↩ Cerrar sesión</button>' : '<button data-action="session">👤 Quién captura</button>'}</div>`);
+  modal(`<div class="sheet-head"><h2>Secciones</h2><button class="x-btn" data-action="close">${ICON.x}</button></div><div class="more-sheet">${GHSync.dir && myProjects().length > 1 ? '<button data-action="proj-pick">🔁 Cambiar de proyecto</button>' : ''}${NAV.flatMap(g => g.items).filter(([k]) => canView(k)).map(([k, l]) => `<button data-action="go" data-v="${k}">${ICON[k]}${l}</button>`).join('')}<button data-action="fb-open">💬 Reportar falla o sugerencia</button><button data-action="inbox">${ICON.bell} Mi bandeja</button>${usersOn() ? '<button data-action="logout">↩ Cerrar sesión</button>' : '<button data-action="session">👤 Quién captura</button>'}</div>`);
 }
 function setPath(obj, path, val) { const ks = path.split('.'); let o = obj; for (let i = 0; i < ks.length - 1; i++) o = o[isNaN(ks[i]) ? ks[i] : Number(ks[i])]; o[ks[ks.length - 1]] = val; }
 function readFin() { const rows = []; $$('#fin-tbl tbody tr[data-i]').forEach(tr => { const o = {}; $$('[data-fin]', tr).forEach(i => o[i.dataset.fin] = i.dataset.fin === 'mes' ? i.value : num(i.value)); if (o.mes) rows.push(o); }); return rows; }
@@ -3523,12 +3809,12 @@ function readFin() { const rows = []; $$('#fin-tbl tbody tr[data-i]').forEach(tr
 document.addEventListener('click', async ev => {
   const t = ev.target.closest('[data-action]'); if (!t) { if (R && R._sugg >= 0 && !ev.target.closest('.combo')) { const s = $('#sugg-' + R._sugg); if (s) s.innerHTML = ''; R._sugg = -1; } return; }
   const a = t.dataset.action, id = t.dataset.id, k = t.dataset.k, v = t.dataset.v;
-  if (a === 'overlay') { if (ev.target === t) { if ($('#modal2-root')?.innerHTML) closeModal(); else if (R) { if (await ask('¿Cerrar sin guardar? Lo capturado en este reporte se perderá.')) closeModal(); } else closeModal(); } return; }
+  if (a === 'overlay') { if (ev.target === t) { if ($('#modal2-root')?.innerHTML) closeModal(); else if (R) { if (await ask('¿Cerrar el reporte? Lo capturado queda como borrador en este equipo y lo puedes continuar después.')) closeModal(); } else closeModal(); } return; }
   switch (a) {
     case 'go': go(v); break;
-    case 'sub': S.sub[v] = k; S.view = v; closeModalSoft(); render(); break;
+    case 'sub': S.sub[v] = k; S.view = v; closeModalSoft(); render(); window.scrollTo({ top: 0 }); break;
     case 'new-report': openReport(null, k); break;
-    case 'close': if ($('#modal2-root')?.innerHTML) { closeModal(); break; } if (R && !await ask('¿Cerrar sin guardar? Lo capturado en este reporte se perderá.')) return; closeModal(); break;
+    case 'close': if ($('#modal2-root')?.innerHTML) { closeModal(); break; } if (R && !await ask('¿Cerrar el reporte? Lo capturado queda como borrador en este equipo y lo puedes continuar después.')) return; closeModal(); break;
     case 'session': openSession(); break;
     case 's-save': saveSession(); break;
     // bitácora
@@ -3611,6 +3897,22 @@ document.addEventListener('click', async ev => {
     case 'eq-add': { const tt = $('#eq-t').value.trim(); if (!tt) return; const e = Object.assign({ extra: [] }, Store.doc('equip') || {}); e.extra = [...(e.extra || []), { t: tt, marca: $('#eq-m').value.trim(), modelo: $('#eq-mo').value.trim() }]; await Store.setDoc('equip', e); render(); break; }
     case 'eq-del': { const e = Object.assign({ extra: [] }, Store.doc('equip') || {}); e.extra = (e.extra || []).filter((_, i) => i !== Number(t.dataset.i)); await Store.setDoc('equip', e); render(); break; }
     case 'more': openMore(); break;
+    case 'proj-pick': openProjPicker(); break;
+    case 'proj-go': closeModalSoft(); if (id === GHSync.proj) { S.view = homeView(); render(); } else switchProject(id); break;
+    case 'proj-new': nuevoProyecto(); break;
+    case 'proj-activar': activarMultiproyecto(); break;
+    case 'md-open': mdOpen(k); break;
+    case 'add-comp': addCompromisos(); R._open.add('avance'); renderComposer(); break;
+    case 'rec-tpl': recetaTpl(); break;
+    case 'prono-tpl': pronoTpl(); break;
+    case 'fb-open': openFeedback(); break;
+    case 'fb-tipo': $$('#fb-t button').forEach(b => b.setAttribute('aria-pressed', b === t)); break;
+    case 'fb-save': saveFeedback(); break;
+    case 'mod-ok': modDecide(id, true); break;
+    case 'mod-no': modDecide(id, false); break;
+    case 'flm-add': { const p = Object.assign({}, Store.doc('project') || {}); p.flujoMods = [...readFlujoMods(), { rol: 'gerente', min: 0 }]; await Store.setDoc('project', p); render(); break; }
+    case 'flm-del': { const p = Object.assign({}, Store.doc('project') || {}); const f = readFlujoMods(); f.splice(Number(t.dataset.i), 1); p.flujoMods = f; await Store.setDoc('project', p); render(); break; }
+    case 'flm-save': { const p = Object.assign({}, Store.doc('project') || {}); p.flujoMods = readFlujoMods(); await Store.setDoc('project', p); await Store.log('actualizó flujo de aditivas', '', p.flujoMods.map(x => ROL[x.rol]?.label).join(' › ') || 'aplicación directa'); toast('Flujo guardado.'); break; }
     case 'insp-new': openInsp(); break;
     case 'ins-res': INS.items[Number(t.dataset.i)].res = k; INS.err = ''; renderInsp(); break;
     case 'ins-save': saveInsp(); break;
@@ -3704,11 +4006,11 @@ document.addEventListener('click', async ev => {
 });
 function readPhases() { return $$('#ph-rows .rowc').map(r => { const pl = $('[data-ph="plano"]', r).value; return { name: $('[data-ph="name"]', r).value.trim(), color: $('[data-ph="color"]', r).value, ini: $('[data-ph="ini"]', r).value, fin: $('[data-ph="fin"]', r).value, responsables: $('[data-ph="resp"]', r).value.trim(), plano: pl ? JSON.parse(pl) : null }; }).filter(p => p.name); }
 
-let qT = null;
+let qT = null, qT2 = null;
 document.addEventListener('input', ev => {
   const t = ev.target;
   if (R && t.dataset.r) {
-    const val = t.type === 'checkbox' ? t.checked : t.value; setPath(R, t.dataset.r, val);
+    const val = t.type === 'checkbox' ? t.checked : t.value; setPath(R, t.dataset.r, val); clearTimeout(qT2); qT2 = setTimeout(saveDraft, 400);
     if (t.dataset.sugg != null) { const i = Number(t.dataset.sugg); const av = R.avances[i]; if (av.clave) { av.clave = ''; } R._sugg = i; $('#sugg-' + i).innerHTML = suggHTML(i); }
     if (t.dataset.hcq != null) { const hcq = norm(R._hcq); $('#hc-list').innerHTML = hcListHTML((Store.arr.hc || []).filter(h => !hcq || norm(h.nombre + ' ' + h.puesto + ' ' + h.empresa).includes(hcq)), new Set(R.personal)); }
     if (t.dataset.r === 'firmar') { const b = $('[data-action="r-save"][data-k="sign"]'); if (b) b.disabled = !t.checked; }
@@ -3747,6 +4049,11 @@ document.addEventListener('change', ev => {
   else if (k === 'pcc') { S.pronoCC = t.value; render(); }
   else if (k === 'pendt') { S.pendT = t.value; render(); }
   else if (k === 'obst') { S.obsT = t.value; render(); }
+  else if (k === 'recv') { S.recV = Number(t.value); render(); }
+  else if (t.dataset.valemaq != null) { const p = Object.assign({}, Store.doc('project') || {}); p.valeMaq = t.checked; Store.setDoc('project', p); toast(t.checked ? 'El vale de maquinaria será obligatorio para firmar.' : 'El vale de maquinaria queda opcional.'); }
+  else if (t.dataset.fbst) { const x = clone(Store.get('feedback', t.dataset.fbst)); x.estatus = t.value; Store.put('feedback', x); }
+  else if (t.dataset.faseresp) { const r0 = faseResp(t.value); if (r0 && $('#' + t.dataset.faseresp)) $('#' + t.dataset.faseresp).value = r0; }
+  else if (t.id === 'eq-fa') { const r0 = faseResp(t.value); const u0 = users().find(x => norm(x.nombre) === norm(r0)); if (u0 && $('#eq-rs')?.tagName === 'SELECT') $('#eq-rs').value = u0.id; }
   else if (t.dataset.plancausa) { const d = clone(planDoc(S.planWeek)); d.comp.find(x => x.id === t.dataset.plancausa).causa = t.value; savePlan(d); }
   else if (k === 'eqresp') { S.eqResp = t.value; render(); }
   else if (t.dataset.mod || t.dataset.ml) { if (t.dataset.ml) { const [i, kk] = t.dataset.ml.split('.'); MOD.lines[Number(i)][kk] = t.value; if (kk === 'clave') renderMod(); } }
